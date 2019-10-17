@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+   <PackageId>Juzu-SDK</PackageId>
+    <Version>0.9.0</Version>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
+    <Authors>Shahruk Hossain</Authors>
+    <Company>Cobalt Speech and Language, Inc.</Company>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>csharp_juzu</RootNamespace>
+    <!-- Run dotnet pack during dotnet build  -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Api.CommonProtos" Version="1.7.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.10.0" />
+    <PackageReference Include="Grpc" Version="2.24.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.24.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <Protobuf Include="../juzu.proto" GrpcServices="Client" />
+
+  </ItemGroup>
+  
+</Project>
+

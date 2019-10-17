@@ -1,0 +1,205 @@
+// Copyright (2019) Cobalt Speech and Language Inc.
+
+syntax = "proto3";
+
+package cobaltspeech.juzu;
+
+option go_package = "juzupb";
+option  csharp_namespace = "CobaltSpeech.Juzu";
+
+import "google/api/annotations.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+
+// Service that implements the Cobalt Juzu Diarization API.
+service Juzu {
+
+ // Queries the Version of the Server.
+  rpc Version (google.protobuf.Empty) returns (VersionResponse) {
+	option (google.api.http) = {
+	  get: "/api/version"
+	};
+  }
+
+  // Retrieves a list of available diarization models.
+  rpc ListModels (google.protobuf.Empty) returns (ListModelsResponse) {
+    option (google.api.http) = {
+      get: "/api/listmodels"
+    };
+  }
+
+  // Performs bidirectional streaming to enable on-the-go processing of 
+  // audio files, as well as the option to receive partial transcripts of 
+  // audio along with speaker IDs. This method is not truly streaming for 
+  // diarization yet, as results are received after specific chunks of audio
+  // have been sent. This method is only available via GRPC and not via HTTP+JSON.
+  // However, a web browser may use websockets to use this service.
+  rpc StreamingDiarize (stream StreamingDiarizeRequest) returns (stream DiarizationResponse) {
+	option (google.api.http) = {
+	  get: "/api/diarize"
+	};
+  }
+
+}
+
+// The top-level message sent by the client for the `StreamingDiarize`
+// request.  Multiple `StreamingDiarizeRequest` messages are sent. The first
+// message must contain a `DiarizationConfig` message only, and all subsequent
+// messages must contain `DiarizationAudio ` only.  All `DiarizationAudio `
+// messages must contain non-empty audio.  If audio content is empty, the server
+// may interpret it as end of stream and stop accepting any further messages.
+message StreamingDiarizeRequest {
+  oneof request {
+	DiarizationConfig config = 1;
+	DiarizationAudio  audio = 2;
+  }
+
+}
+
+// The message sent by the server for the `Version` method.
+message VersionResponse {
+  // version of the juzu library handling the recognition.
+  string juzu = 1;
+
+  // version of the server handling these requests.
+  string server = 2;
+}
+
+// The message sent by the server for the `ListModels` method.
+message ListModelsResponse {
+  // List of models available for use that match the request.
+  repeated Model models = 1; 
+}
+
+// Description of a Juzu Diarization Model.
+message Model {
+  // Unique identifier of the model. This identifier is used to choose the
+  // model that should be used for diarization, and is specified in the
+  // `DiarizationConfig` message.
+  string id = 1;
+
+  // Model name.  This is a concise name describing the model, and maybe
+  // presented to the end-user, for example, to help choose which model to use.
+  string name = 2;
+
+  // Model attributes.
+  ModelAttributes attributes = 3;
+}
+
+// Attributes of a Juzu Diarization Model.
+message ModelAttributes {
+  // Audio sample rate supported by the model.
+  uint32 sample_rate = 1;
+
+  // The type of segmentation (fixed / variable) supported by the model.
+  string segmentation_type = 2;
+}
+
+// Collection of sequence of diarization results in a portion of audio.
+// Juzu currently requires the full audio to determine which audio segments
+// belong to which speaker.
+message DiarizationResponse {
+  repeated DiarizationResult results = 1;
+}
+
+
+// Configuration for setting up a Diarizer.
+message DiarizationConfig {
+  
+  // ID of the diarization model to use on the server.
+  // Can be obtained by first getting list of models 
+  // on the server via ListModels().
+  string model_id = 1;
+
+  // The number of speakers expected in the audio; 
+  // If the number of speakers is unknown, set to 0.
+  uint32 num_speakers = 2;
+
+  // Sampling rate of the audio to process.
+  uint32 sample_rate = 3;
+
+  // The encoding of the audio data to be sent for recognition.
+  //
+  // For best results, the audio source should be captured and transmitted using
+  // the RAW_LINEAR16 encoding.
+  enum Encoding {
+	// Raw (headerless) Uncompressed 16-bit signed little endian samples (linear
+	// PCM), single channel, sampled at the rate expected by the chosen `Model`.
+	RAW_LINEAR16 = 0;
+
+	// WAV (data with RIFF headers), with data sampled at a rate equal to or
+	// higher than the sample rate expected by the chosen Model.
+	WAV = 1;
+
+	// FLAC data, sampled at a rate equal to or higher than the sample rate
+	// expected by the chosen Model.
+	FLAC = 2;
+
+  }
+
+  // Encoding of audio data sent/streamed through the `DiarizationAudio`
+  // messages.  For encodings like WAV/MP3 that have headers, the headers are
+  // expected to be sent at the beginning of the stream, not in every
+  // `DiarizationAudio` message.
+  //
+  // If not specified, the default encoding is RAW_LINEAR16.
+  //
+  // Depending on how they are configured, server instances of this service may
+  // not support all the encodings enumerated above. They are always required to
+  // accept RAW_LINEAR16.  If any other `Encoding` is specified, and it is not
+  // available on the server being used, the recognition request will result in
+  // an appropriate error message.
+  Encoding audio_encoding = 4;
+
+  // Unique identifier of the cubic model to be used for speech recognition.
+  // If Juzusvr has been setup to use Cubicsvr, transcription results from 
+  // cubic will also be returned alongside speaker labels. 
+  string cubic_model_id = 5;
+
+  // Returns unformatted transcript.
+  bool enable_raw_transcript = 6;
+
+}
+
+// Audio to be sent to the diarizer.
+message DiarizationAudio {
+  bytes data = 1;
+}
+
+
+// A diarization result corresponding to a portion of audio.
+message DiarizationResult {
+
+  // Diarized segments containing speaker labels, timestamps and transcripts.
+  repeated Segment segments = 1;
+  
+  // Set of labels used to identify speakers in each segment.
+  repeated string speaker_labels = 2;
+ 
+  // If this is set to true, it denotes that the result is an interim partial
+  // result, and could change after more audio is processed.  If unset, or set
+  // to false, it denotes that this is a final result and will not change.
+  //
+  // Servers are not required to implement support for returning partial
+  // results, and clients should generally not depend on their availability.
+  bool is_partial = 3;
+}
+
+// A diarized segment of audio.
+message Segment {
+  
+  // The identity of the speaker for this segment.
+  string speaker_label = 1;
+
+  // Time offset relative to the beginning of audio received by the diarizer
+  // and corresponding to the start of this segment.
+  google.protobuf.Duration start_time = 2;
+
+  // Time offset relative to the beginning of audio received by the diarizer
+  // and corresponding to the end of this segment.
+  google.protobuf.Duration end_time = 3;
+
+  // Text representing the transcription of the words that the speaker spoke.
+  // Formatting options are set in cubicsvr.
+  string transcript = 4;
+}
