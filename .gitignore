@@ -1,0 +1,11 @@
+## Ignore dependency files that are
+## downloaded when building the SDK.
+
+# google proto files
+grpc/google/*
+
+# go dependencies
+deps/*
+
+# misc
+.DS_Store
