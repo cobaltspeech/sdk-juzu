@@ -151,9 +151,9 @@ func (*StreamingDiarizeRequest) XXX_OneofWrappers() []interface{} {
 
 // The message sent by the server for the `Version` method.
 type VersionResponse struct {
-	// version of the juzu library handling the recognition
+	// version of the juzu library handling the recognition.
 	Juzu string `protobuf:"bytes,1,opt,name=juzu,proto3" json:"juzu,omitempty"`
-	// version of the server handling these requests
+	// version of the server handling these requests.
 	Server               string   `protobuf:"bytes,2,opt,name=server,proto3" json:"server,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -240,7 +240,7 @@ func (m *ListModelsResponse) GetModels() []*Model {
 	return nil
 }
 
-// Description of a Juzu Diarization Model
+// Description of a Juzu Diarization Model.
 type Model struct {
 	// Unique identifier of the model. This identifier is used to choose the
 	// model that should be used for diarization, and is specified in the
@@ -249,7 +249,7 @@ type Model struct {
 	// Model name.  This is a concise name describing the model, and maybe
 	// presented to the end-user, for example, to help choose which model to use.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// Model attributes
+	// Model attributes.
 	Attributes           *ModelAttributes `protobuf:"bytes,3,opt,name=attributes,proto3" json:"attributes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
@@ -302,11 +302,11 @@ func (m *Model) GetAttributes() *ModelAttributes {
 	return nil
 }
 
-// Attributes of a Juzu Diarization Model
+// Attributes of a Juzu Diarization Model.
 type ModelAttributes struct {
-	// Audio sample rate supported by the model
+	// Audio sample rate supported by the model.
 	SampleRate uint32 `protobuf:"varint,1,opt,name=sample_rate,json=sampleRate,proto3" json:"sample_rate,omitempty"`
-	// The type of segmentation (fixed / variable) supported by the model
+	// The type of segmentation (fixed / variable) supported by the model.
 	SegmentationType     string   `protobuf:"bytes,2,opt,name=segmentation_type,json=segmentationType,proto3" json:"segmentation_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -353,9 +353,8 @@ func (m *ModelAttributes) GetSegmentationType() string {
 }
 
 // Collection of sequence of diarization results in a portion of audio.
-// NOTE: Juzu has not been converted for "true" streaming diarization,
-// and so can only return diarization results after the final streaming
-// request.
+// Juzu currently requires the full audio to determine which audio segments
+// belong to which speaker.
 type DiarizationResponse struct {
 	Results              []*DiarizationResult `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
@@ -399,12 +398,12 @@ func (m *DiarizationResponse) GetResults() []*DiarizationResult {
 type DiarizationConfig struct {
 	// ID of the diarization model to use on the server.
 	// Can be obtained by first getting list of models
-	// on the server via ListModels()
+	// on the server via ListModels().
 	ModelId string `protobuf:"bytes,1,opt,name=model_id,json=modelId,proto3" json:"model_id,omitempty"`
 	// The number of speakers expected in the audio;
-	// If the number of speakers is unknown, set to 0
+	// If the number of speakers is unknown, set to 0.
 	NumSpeakers uint32 `protobuf:"varint,2,opt,name=num_speakers,json=numSpeakers,proto3" json:"num_speakers,omitempty"`
-	// Sampling rate of the audio to process
+	// Sampling rate of the audio to process.
 	SampleRate uint32 `protobuf:"varint,3,opt,name=sample_rate,json=sampleRate,proto3" json:"sample_rate,omitempty"`
 	// Encoding of audio data sent/streamed through the `DiarizationAudio`
 	// messages.  For encodings like WAV/MP3 that have headers, the headers are
@@ -422,12 +421,8 @@ type DiarizationConfig struct {
 	// Unique identifier of the cubic model to be used for speech recognition.
 	// If Juzusvr has been setup to use Cubicsvr, transcription results from
 	// cubic will also be returned alongside speaker labels.
-	//
-	// NOTE: Cubicsvr must be started and configured in the Juzusvr config for
-	// this to work properly. The models must also be chosen carefully by the client
-	// so that the sampling rates of Juzu models and Cubic Models match.
 	CubicModelId string `protobuf:"bytes,5,opt,name=cubic_model_id,json=cubicModelId,proto3" json:"cubic_model_id,omitempty"`
-	// Returns unformatted transcript
+	// Returns unformatted transcript.
 	EnableRawTranscript  bool     `protobuf:"varint,6,opt,name=enable_raw_transcript,json=enableRawTranscript,proto3" json:"enable_raw_transcript,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -543,9 +538,9 @@ func (m *DiarizationAudio) GetData() []byte {
 
 // A diarization result corresponding to a portion of audio.
 type DiarizationResult struct {
-	// Diarized segments containing speaker labels, timestamps and transcripts
+	// Diarized segments containing speaker labels, timestamps and transcripts.
 	Segments []*Segment `protobuf:"bytes,1,rep,name=segments,proto3" json:"segments,omitempty"`
-	// Set of labels used to identify speakers in each segment
+	// Set of labels used to identify speakers in each segment.
 	SpeakerLabels []string `protobuf:"bytes,2,rep,name=speaker_labels,json=speakerLabels,proto3" json:"speaker_labels,omitempty"`
 	// If this is set to true, it denotes that the result is an interim partial
 	// result, and could change after more audio is processed.  If unset, or set
@@ -761,9 +756,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type JuzuClient interface {
-	// Queries the Version of the Server
+	// Queries the Version of the Server.
 	Version(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*VersionResponse, error)
-	// Retrieves a list of available diarization models
+	// Retrieves a list of available diarization models.
 	ListModels(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*ListModelsResponse, error)
 	// Performs bidirectional streaming to enable on-the-go processing of
 	// audio files, as well as the option to receive partial transcripts of
@@ -833,9 +828,9 @@ func (x *juzuStreamingDiarizeClient) Recv() (*DiarizationResponse, error) {
 
 // JuzuServer is the server API for Juzu service.
 type JuzuServer interface {
-	// Queries the Version of the Server
+	// Queries the Version of the Server.
 	Version(context.Context, *empty.Empty) (*VersionResponse, error)
-	// Retrieves a list of available diarization models
+	// Retrieves a list of available diarization models.
 	ListModels(context.Context, *empty.Empty) (*ListModelsResponse, error)
 	// Performs bidirectional streaming to enable on-the-go processing of
 	// audio files, as well as the option to receive partial transcripts of
