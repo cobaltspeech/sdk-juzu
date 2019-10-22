@@ -24,7 +24,7 @@ ${GO_OUTDIR}/gw/juzu.pb.gw.go: juzu.proto
 	protoc -I . -I ${PROTOINC} --grpc-gateway_out=logtostderr=true:${GO_OUTDIR}/gw $<
 	sed -i -E "s/package juzupb/package gw/g" $@
 	sed -i -E "s/Package juzupb is/Package gw is/g" $@
-	sed -i -E "s|import \(|& \"github.com/cobaltspeech/juzu/internal/svr/grpc/juzupb\"|" $@
+	sed -i -E "s|import \(|& \"github.com/cobaltspeech/sdk-juzu/grpc/go-juzu/juzupb\"|" $@
 	sed -i -E "s/protoReq /&juzupb\./g" $@
 	sed -i -E "s/(protoReq )juzupb\.([A-Za-z]+\.)/\1\2/g" $@
 	sed -i -E "s/, client /, client juzupb./g" $@

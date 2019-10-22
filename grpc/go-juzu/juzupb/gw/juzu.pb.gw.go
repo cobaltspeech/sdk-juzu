@@ -10,7 +10,7 @@ package gw
 
 import (
 	"context"
-	"github.com/cobaltspeech/juzu/internal/svr/grpc/juzupb"
+	"github.com/cobaltspeech/sdk-juzu/grpc/go-juzu/juzupb"
 	"io"
 	"net/http"
 
