@@ -7,9 +7,9 @@ using Grpc.Core;
 
 namespace JuzusvrClient {
 
-    delegate void ResponseHandler(CobaltSpeech.Juzu.DiarizationResponse resp);
+    public delegate void ResponseHandler(CobaltSpeech.Juzu.DiarizationResponse resp);
     
-    class Client {
+    public class Client {
 
         private string serverURL;
         private Grpc.Core.ChannelCredentials creds;
@@ -122,7 +122,7 @@ namespace JuzusvrClient {
         }
     }
 
-    struct DiarizationConfig {
+    public struct DiarizationConfig {
         public string JuzuModelID;
         public string CubicModelID;
         public uint NumSpeakers;
