@@ -21,7 +21,7 @@ Code generation has the following dependencies:
   - The golang plugins (protoc-gen-go and protoc-gen-grpc-gateway)
 
 A few system dependencies are required:
-  - Go 1.12
+  - Go >= 1.12
   - git
   - wget
 
@@ -40,7 +40,7 @@ repository.
 Step 1: Make sure all generated code and documentation is up to date.
 
 ```
-pushd grpc && make && popd
+make
 ```
 
 Step 2: Update the version number.

@@ -35,7 +35,7 @@ ${GO_OUTDIR}/gw/juzu.pb.gw.go: juzu.proto
 
 ## C#
 ## https://docs.microsoft.com/en-us/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli
-VERSION=0.9.0-rc1
+VERSION=0.9.1
 NUGET_API_KEY="" # Must be set to push the nuget package.
 
 cs_deps:
