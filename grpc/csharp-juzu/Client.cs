@@ -16,21 +16,45 @@ namespace JuzusvrClient {
         private Grpc.Core.Channel channel;
         private CobaltSpeech.Juzu.Juzu.JuzuClient client;
 
-        // Creates a client to Juzusvr
-        public Client (string url, bool tlsEnabled) {
+        // Creates a client to Juzusvr. If insecure is set 
+        // to True, TLS will be disabled.
+        public Client (string url, bool insecure) {
             
             this.serverURL = url;
-
-            // creating a gRPC channel; 
-            if (tlsEnabled) {
-                this.creds = new Grpc.Core.SslCredentials ();
-            } else {
+ 
+            if (insecure) {
+                // no TLS
                 this.creds = Grpc.Core.ChannelCredentials.Insecure;
+            } else {
+                // SSL credentials loaded from disk file pointed to by the 
+                // GRPC_DEFAULT_SSL_ROOTS_FILE_PATH environment variable.
+                // If that fails, gets the roots certificates from a well 
+                // known place on disk.
+                this.creds = new Grpc.Core.SslCredentials ();
             }
             this.channel = new Grpc.Core.Channel (url, this.creds);
-
-            // creating client
             this.client = client = new CobaltSpeech.Juzu.Juzu.JuzuClient (channel);
+        }
+
+        // Creates a client to Juzusvr with SSL credentials
+        // from a string containing PEM encoded root certificates,
+        // that can validate the certificate presented by the server.
+        public Client (string url, string rootCert) {
+            this.serverURL = url;
+            this.creds = new Grpc.Core.SslCredentials(rootCert);
+            this.channel = new Grpc.Core.Channel(url, this.creds);
+            this.client = client = new CobaltSpeech.Juzu.Juzu.JuzuClient(channel);
+        }
+
+        // Creates a client to Juzusvr with mutually authenticated TLS.
+        // The PEM encoded root certificates, PEM encoded client certificate
+        // and the client's PEM private key must be provided as strings.
+        public Client (string url, string rootCert, string clientCert, string clientKey) {
+            this.serverURL = url;
+            var keyCertPair = new Grpc.Core.KeyCertificatePair(clientCert, clientKey);
+            this.creds = new Grpc.Core.SslCredentials(rootCert, keyCertPair);
+            this.channel = new Grpc.Core.Channel(url, this.creds);
+            this.client = client = new CobaltSpeech.Juzu.Juzu.JuzuClient(channel);
         }
 
         // Queries version of the server
