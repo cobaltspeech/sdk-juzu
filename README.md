@@ -2,6 +2,9 @@
 
 This repository contains the SDK for Cobalt's Juzu Speech Diarization Engine.
 
+This README has instructions to _build_ the SDK.  For installing and using the
+SDK, see the [SDK Docs](https://cobaltspeech.github.io/sdk-juzu).
+
 ## Network API (using GRPC)
 
 The `grpc` folder at the top level of this repository contains code for Juzu's
@@ -19,6 +22,7 @@ Code generation has the following dependencies:
   - The protobuf compiler itself (protoc)
   - The protobuf documentation generation plugin (protoc-gen-doc)
   - The golang plugins (protoc-gen-go and protoc-gen-grpc-gateway)
+  - The static website generator (hugo)
 
 A few system dependencies are required:
   - Go >= 1.12
@@ -27,7 +31,14 @@ A few system dependencies are required:
 
 The top level Makefile can set up all other dependencies.
 
-To generate the code and documentation, run `make`.  
+To generate the code and documentation, run `make`. This is currently only supported under linux.
+
+If you are doing local development on the docs, you can use this command to serve it locally:
+
+```
+cd docs-src
+../deps/bin/hugo server -D
+```
 
 ### Tagging New Versions
 
@@ -39,9 +50,16 @@ repository.
 
 Step 1: Make sure all generated code and documentation is up to date.
 
-```
+``` sh
+# first make sure the generated code and auto generated protobuf docs are upto date
 make
+
+# then build the static documentation pages
+pushd docs-src && ../deps/bin/hugo -d ../docs && popd
 ```
+
+Please make sure that when changing the documentation, the newly generated
+changes in docs are also checked into this repository.
 
 Step 2: Update the version number.
 
@@ -54,7 +72,7 @@ version to tag is `1.0.1`.
 
 Step 3: Add version tags to the sources.
 
-```
+``` sh
 NEW_VERSION="1.0.1"
 
 git checkout master
@@ -72,7 +90,7 @@ Step 4: Create a pull request and get changes merged to master.
 
 Step 5: Create version tags on the latest master branch:
 
-```
+``` sh
 git checkout master
 git pull origin master
 git tag -a v$NEW_VERSION -m ''

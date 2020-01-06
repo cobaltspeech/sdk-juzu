@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Juzu SDK -- Cobalt</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Server Setup :: Juzu SDK -- Cobalt</title>
+<link rel="shortcut icon" href="/sdk-juzu/images/favicon.ico" type="image/x-icon" />
+<link href="/sdk-juzu/css/nucleus.css" rel="stylesheet">
+<link href="/sdk-juzu/css/font-awesome.min.css" rel="stylesheet">
+<link href="/sdk-juzu/css/hybrid.css" rel="stylesheet">
+<link href="/sdk-juzu/css/featherlight.min.css" rel="stylesheet">
+<link href="/sdk-juzu/css/auto-complete.css" rel="stylesheet">
+<link href="/sdk-juzu/theme-original/style.css" rel="stylesheet">
+
+  <link href="/sdk-juzu/theme-original/variant-blue.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/sdk-juzu/css/bootstrap.min.css">
+<script src="/sdk-juzu/js/jquery-2.x.min.js"></script>
+<style type="text/css">
+  :root #header + #content > #left > #rlblock_left {
+    display:none !important;
+  }
+</style>
+<link href="/sdk-juzu/css/tabs.css" rel="stylesheet" type="text/css">
+<script src="/sdk-juzu/js/tabs.js"></script>
+
+
+    
+  </head>
+  <body data-url="/sdk-juzu/getting-started/">
+    
+      <div id="headermain"></div>
+<nav id="sidebar" class="showVisitedLinks">
+
+
+
+<div class="highlightable">
+  <div id="header-wrapper">
+    <div id="header">
+      
+	
+  
+    <p><img src="/sdk-juzu/images/logo-white.png" alt="Cobalt's SDK Documentation" /></p>
+
+<p>Juzu SDK &ndash; Cobalt</p>
+
+  
+
+
+    </div>
+        <div class="searchbox">
+		    <label for="search-by"><i class="fa fa-search"></i></label>
+		    <input data-search-input id="search-by" type="text" placeholder="Search...">
+		    <span data-search-clear=""><i class="fa fa-close"></i></span>
+		</div>
+		<script type="text/javascript" src="/sdk-juzu/js/lunr.min.js"></script>
+		<script type="text/javascript" src="/sdk-juzu/js/auto-complete.js"></script>
+		<script type="text/javascript">
+        
+            var baseurl = "https:\/\/cobaltspeech.github.io\/sdk-juzu";
+        
+		</script>
+		<script type="text/javascript" src="/sdk-juzu/js/search.js"></script>
+  </div>
+
+      <ul class="topics">
+            <li data-nav-id="/sdk-juzu/" class="dd-item">
+            <a href="/sdk-juzu/"><i class="fa fa-fw fa-home"></i></a>
+            </li>
+    <li data-nav-id="/sdk-juzu/getting-started/" class="dd-item parent active
+        ">
+      <div>
+      <a href="/sdk-juzu/getting-started/">Server Setup</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+    <li data-nav-id="/sdk-juzu/using-juzu-sdk/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="/sdk-juzu/using-juzu-sdk/">Using Juzu-SDK</a><i class="fa fa-angle-right fa-lg category-icon"></i><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+        <ul>
+      <li data-nav-id="/sdk-juzu/using-juzu-sdk/installation/" class="dd-item">
+        <div>
+          <a href="/sdk-juzu/using-juzu-sdk/installation/">
+            Installing the SDK
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/sdk-juzu/using-juzu-sdk/connecting/" class="dd-item">
+        <div>
+          <a href="/sdk-juzu/using-juzu-sdk/connecting/">
+            Setup Connection
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/sdk-juzu/using-juzu-sdk/streaming/" class="dd-item">
+        <div>
+          <a href="/sdk-juzu/using-juzu-sdk/streaming/">
+            Streaming Diarization
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+      <li data-nav-id="/sdk-juzu/using-juzu-sdk/client-configs/" class="dd-item">
+        <div>
+          <a href="/sdk-juzu/using-juzu-sdk/client-configs/">
+            Diarization Configurations
+          </a><i class="fa fa-circle-thin read-icon"></i>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/sdk-juzu/protobuf/" class="dd-item
+        ">
+      <div>
+      <a href="/sdk-juzu/protobuf/">Juzu API Reference</a><i class="fa fa-circle-thin read-icon"></i>
+      </div>
+    </li>
+
+
+
+        <section id="shortcuts">
+                <li class="" role=""><h3>More</h3><a href="https://github.com/cobaltspeech/sdk-juzu" target="_blank" rel="noopener"><i class='fa fa-github'></i> <label>Github repo</label></a></li>
+                <li class="" role=""><a href="https://www.cobaltspeech.com/contact" target="_blank" rel="noopener"><i class='fa fa-bookmark'></i> <label>Contact us</label></a></li>
+        </section>
+            <a id="clear-history" class="" href="#" data-clear-history-toggle=""><i class="fa  fa-history"></i> Clear History</a>
+
+    <hr />
+    <li></li>
+    
+    </ul>
+
+ <section id="footer">
+    </section>
+  </div>
+</nav>
+
+
+
+<section id="body">
+<div id="overlay"></div>
+<div class="padding highlightable">
+
+  <div id="top-bar">
+    <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+        <span id="sidebar-toggle-span">
+          <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+            <i class="fa fa-bars"></i>
+          </a>
+        </span>
+        <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+        <span class="links">
+        
+
+
+
+
+ <a href='/sdk-juzu/'>Juzu SDK Documentation</a> > Server Setup
+
+ 
+
+   
+        </span>
+    </div>
+    
+    
+    <div class="progress">
+        <div class="wrapper">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#installing-the-juzu-server-image">Installing the Juzu Server Image</a></li>
+<li><a href="#contents-of-the-docker-image">Contents of the docker image</a>
+<ul>
+<li><a href="#cobalt-specific-files">Cobalt-specific files</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+    </div>
+    
+
+  </div>
+
+
+<div id="body-inner">
+  
+    <h1>Server Setup</h1>
+  
+
+
+
+    
+    
+    
+
+<p>This section is meant to get you started using Juzu Server via a <a href="https://www.docker.com/products/docker-desktop">Docker</a> image.</p>
+
+<h2 id="installing-the-juzu-server-image">Installing the Juzu Server Image</h2>
+
+<p>The SDK communicates with a Juzu Server instance using <a href="https://grpc.io">gRPC</a>.  Cobalt distributes a docker image that contains the <code>juzusvr</code> binary and model files. The image can also include Cubic Server as well to get diarization and transcription results together.</p>
+
+<ol>
+<li><p>Contact Cobalt to get a link to the image file in AWS S3.  This link will expire in two weeks, so be sure to download the file to your own server.</p></li>
+
+<li><p>Download with the AWS CLI if you have it, or with curl:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#40ffff">URL</span>=<span style="color:#ed9d13">&#34;the url sent by Cobalt&#34;</span>
+<span style="color:#40ffff">IMAGE_NAME</span>=<span style="color:#ed9d13">&#34;name you want to give the file (should end with the same extension as the url, usually bz2)&#34;</span>
+curl <span style="color:#40ffff">$URL</span> -L -o <span style="color:#40ffff">$IMAGE_NAME</span></code></pre></div></li>
+
+<li><p>Load the docker image</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker load &lt; <span style="color:#40ffff">$IMAGE_NAME</span></code></pre></div>
+<p>This will output the name of the image (e.g. juzusvr-demo-en_us-16).</p></li>
+
+<li><p>Start the juzu service</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -p <span style="color:#3677a9">2727</span>:2727 -p <span style="color:#3677a9">8080</span>:8080 --name cobalt-juzu juzusvr-demo-en_us-16</code></pre></div>
+<p>That will start a docker container with juzusvr listening for gRPC commands on port 2727 and http requests on 8080, and will stream the log to stdout. (You can replace <code>--name cobalt-juzu</code> with whatever name you want.  That just provides a way to refer back to the currently running container.)</p>
+
+<p>If the image provided also includes cubicsvr, then adding the arguments <code>-p CUBICSVR_GRPC_PORT:2728 -p CUBICSVR_HTTP_PORT:8081</code> to the <code>docker run</code> command above will enable you to access cubicsvr directly via <code>CUBICSVR_GRPC_PORT</code> and <code>CUBICSVR_HTTP_PORT</code> for gRPC and HTTP requests respectively. This is useful when you want to only obtain transcription in &ldquo;true&rdquo; streaming mode and diarization is not required.</p></li>
+
+<li><p>Verify the service is running by calling</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl http://localhost:8080/api/version</code></pre></div></li>
+</ol>
+
+<h2 id="contents-of-the-docker-image">Contents of the docker image</h2>
+
+<ul>
+<li><strong>Base docker image</strong> : debian-stretch-slim</li>
+<li><strong>Additional dependencies</strong>
+
+<ul>
+<li>sox</li>
+<li>a subset of pre-compiled kaldi binaries</li>
+</ul></li>
+</ul>
+
+<h3 id="cobalt-specific-files">Cobalt-specific files</h3>
+
+<ul>
+<li><strong>juzusvr</strong> - binary for performing Speaker Diarization</li>
+
+<li><p><strong>diarization models</strong> - models for extracting and scoring speaker embedding vectors</p></li>
+
+<li><p>If configured to include <a href="https://cobaltspeech.github.io/sdk-cubic/">Cubic</a>:</p>
+
+<ul>
+<li><strong>cubicsvr</strong> - binary for performing Automatic Speech Recognition</li>
+<li><strong>cubic models</strong> - speech recognition models and <a href="https://cobaltspeech.github.io/sdk-cubic/getting-started/#cobalt-specific-files">associated files</a></li>
+</ul></li>
+</ul>
+
+
+    
+    
+          <footer class=" footline" >
+	
+</footer>
+  </div>
+</div>
+
+<div id="navigation">
+<a class="nav nav-prev" href="/sdk-juzu/" title="Juzu SDK Documentation"> <i class="fa fa-chevron-left"></i><label>Juzu SDK Documentation</label></a>
+    <a class="nav nav-next" href="/sdk-juzu/using-juzu-sdk/" title="Using Juzu-SDK" style="margin-right: 0px;"><label>Using Juzu-SDK</label><i class="fa fa-chevron-right"></i></a></div>
+
+</section>
+<div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+  <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+</div>    
+
+<script src="/sdk-juzu/js/clipboard.min.js"></script>
+<script src="/sdk-juzu/js/featherlight.min.js"></script>
+<script src="/sdk-juzu/js/html5shiv-printshiv.min.js"></script>
+
+<script src="/sdk-juzu/js/modernizr.custom.71422.js"></script>
+<script src="/sdk-juzu/js/docdock.js"></script>
+<script src="/sdk-juzu/theme-original/script.js"></script>
+
+
+    
+
+    
+    
+
+    
+  </body>
+</html>

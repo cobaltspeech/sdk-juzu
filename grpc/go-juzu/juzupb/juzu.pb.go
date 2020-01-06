@@ -418,9 +418,11 @@ type DiarizationConfig struct {
 	// available on the server being used, the recognition request will result in
 	// an appropriate error message.
 	AudioEncoding DiarizationConfig_Encoding `protobuf:"varint,4,opt,name=audio_encoding,json=audioEncoding,proto3,enum=cobaltspeech.juzu.DiarizationConfig_Encoding" json:"audio_encoding,omitempty"`
-	// Unique identifier of the cubic model to be used for speech recognition.
-	// If Juzusvr has been setup to use Cubicsvr, transcription results from
-	// cubic will also be returned alongside speaker labels.
+	// Unique identifier of the cubic model to be used for speech recognition. If
+	// this value is specified, transcription results from the cubic model with
+	// the given ID will also be returned alongside speaker labels. If it omitted
+	// or blank, the results will not include transcripts, even if Cubic server
+	// was included in the deployed image.
 	CubicModelId string `protobuf:"bytes,5,opt,name=cubic_model_id,json=cubicModelId,proto3" json:"cubic_model_id,omitempty"`
 	// Returns unformatted transcript.
 	EnableRawTranscript  bool     `protobuf:"varint,6,opt,name=enable_raw_transcript,json=enableRawTranscript,proto3" json:"enable_raw_transcript,omitempty"`
