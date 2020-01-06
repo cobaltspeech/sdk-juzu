@@ -1,0 +1,90 @@
+---
+title: "Juzu API Reference"
+weight: 3
+---
+
+The Juzu API is specified as a [proto
+file](https://github.com/cobaltspeech/sdk-juzu/blob/master/grpc/juzu.proto).
+This section of the documentation is auto-generated from the spec.  It describes
+the data types and functions defined in the spec. The "messages" below
+correspond to the data structures to be used, and the "service" contains the
+methods that can be called.
+
+
+{{range .Files}}
+{{$file_name := .Name}}
+
+## {{.Name}}
+{{.Description}}
+
+{{range .Services}}
+
+
+### Service: {{.Name}}
+{{.Description}}
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+{{range .Methods -}}
+  | {{.Name}} | {{.RequestLongType}} | {{.ResponseLongType}} | {{nobr .Description}} |
+{{end}}
+{{end}} <!-- end services -->
+
+{{range .Messages}}
+
+### Message: {{.LongName}}
+{{.Description}}
+
+{{if .HasFields}}
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+{{range .Fields -}}
+  | {{.Name}} | {{.LongType}} | {{.Label}} | {{nobr .Description | p}}{{if .DefaultValue}} Default: {{.DefaultValue}}{{end}} |
+{{end}}
+{{else}}
+This message is empty and has no fields.
+{{end}}
+
+{{if .HasExtensions}}
+| Extension | Type | Base | Number | Description |
+| --------- | ---- | ---- | ------ | ----------- |
+{{range .Extensions -}}
+  | {{.Name}} | {{.LongType}} | {{.ContainingLongType}} | {{.Number}} | {{nobr .Description}}{{if .DefaultValue}} Default: {{.DefaultValue}}{{end}} |
+{{end}}
+{{end}}
+
+{{end}} <!-- end messages -->
+
+{{range .Enums}}
+
+### Enum: {{.LongName}}
+{{.Description}}
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+{{range .Values -}}
+  | {{.Name}} | {{.Number}} | {{nobr .Description}} |
+{{end}}
+
+{{end}} <!-- end enums -->
+
+{{if .HasExtensions}}
+
+### File-level Extensions
+| Extension | Type | Base | Number | Description |
+| --------- | ---- | ---- | ------ | ----------- |
+{{range .Extensions -}}
+  | {{.Name}} | {{.LongType}} | {{.ContainingLongType}} | {{.Number}} | {{nobr .Description}}{{if .DefaultValue}} Default: `{{.DefaultValue}}`{{end}} |
+{{end}}
+{{end}} <!-- end HasExtensions -->
+
+
+{{end}}
+
+## Scalar Value Types
+
+| .proto Type | Notes | Go Type | Python Type |
+| ----------- | ----- | ------- | ----------- |
+{{range .Scalars -}}
+  | {{.ProtoType}} | {{.Notes}} | {{.GoType}} | {{.PythonType}} |
+{{end}}

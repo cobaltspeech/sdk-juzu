@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Juzu SDK Documentation on Juzu SDK -- Cobalt</title>
+    <link>https://cobaltspeech.github.io/sdk-juzu/</link>
+    <description>Recent content in Juzu SDK Documentation on Juzu SDK -- Cobalt</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://cobaltspeech.github.io/sdk-juzu/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Installing the SDK</title>
+      <link>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/installation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/installation/</guid>
+      <description>&lt;p&gt;Instructions for installing the SDK are language specific.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Setup Connection</title>
+      <link>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/connecting/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/connecting/</guid>
+      <description>&lt;p&gt;Once you have your Juzu server up and running, let&amp;rsquo;s see how we can use the SDK
+to connect to it.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Streaming Diarization</title>
+      <link>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/streaming/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/streaming/</guid>
+      <description>&lt;p&gt;The following example shows how to diarize and transcribe an audio file using
+Juzu’s Streaming Diarize Request. The stream can come from a file on disk or be
+directly from a microphone in real time. The diarization (and transcription)
+results are returned after the stream is ended and all the audio has been sent
+to the server.&lt;/p&gt;
+
+&lt;p&gt;For real-time streaming transcription without diarization, call cubicsvr directly.
+(See &lt;a href=&#34;https://cobaltspeech.github.io/sdk-cubic/using-cubic-sdk/streaming/&#34;&gt;StreamingRecognize&lt;/a&gt; in the Cubic SDK documentation.)&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Diarization Configurations</title>
+      <link>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/client-configs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cobaltspeech.github.io/sdk-juzu/using-juzu-sdk/client-configs/</guid>
+      <description>An in-depth explanation of the various fields of the complete SDK can be found here. The sub-section DiarizationConfig details the options that can be set when sending a diarization request.
+This page here discusses the more common combinations sent to the server.
+Fields    Field Required Default Description     model_id Yes  ID of the diarization model to use on the server. Can be obtained by first getting list of models on the server via ListModels().</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://cobaltspeech.github.io/sdk-juzu/_header/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://cobaltspeech.github.io/sdk-juzu/_header/</guid>
+      <description>Juzu SDK &amp;ndash; Cobalt</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,11 +1,15 @@
 # Copyright (2019) Cobalt Speech and Language Inc.
 
-.PHONY: all go cs cs_push cs_deps clean
+.PHONY: all go cs cs_push cs_deps docs clean
 
-all: go cs
+all: go cs docs
 
 
 GO_OUTDIR=go-juzu/juzupb
+
+DOCS_OUTDIR=../docs-src/content/protobuf
+
+docs: ${DOCS_OUTDIR}/_index.md
 
 go: ${GO_OUTDIR}/juzu.pb.go ${GO_OUTDIR}/gw/juzu.pb.gw.go
 
@@ -53,6 +57,14 @@ cs_push:
 		./csharp-juzu/bin/Debug/Juzu-SDK.${VERSION}.nupkg \
 		-k ${NUGET_API_KEY} \
 		-s https://api.nuget.org/v3/index.json
+
+${DOCS_OUTDIR}/_index.md: juzu.proto doc.md.tmpl
+	protoc \
+		-I . \
+		-I ${PROTOINC} \
+		--doc_out=${DOCS_OUTDIR} \
+		--doc_opt=doc.md.tmpl,${DOCS_OUTDIR}/_index.md \
+		juzu.proto
 
 clean:
 	rm -rf juzupb

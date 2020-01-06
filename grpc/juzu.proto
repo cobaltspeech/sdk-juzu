@@ -151,9 +151,11 @@ message DiarizationConfig {
   // an appropriate error message.
   Encoding audio_encoding = 4;
 
-  // Unique identifier of the cubic model to be used for speech recognition.
-  // If Juzusvr has been setup to use Cubicsvr, transcription results from 
-  // cubic will also be returned alongside speaker labels. 
+  // Unique identifier of the cubic model to be used for speech recognition. If
+  // this value is specified, transcription results from the cubic model with
+  // the given ID will also be returned alongside speaker labels. If it omitted
+  // or blank, the results will not include transcripts, even if Cubic server
+  // was included in the deployed image.
   string cubic_model_id = 5;
 
   // Returns unformatted transcript.
