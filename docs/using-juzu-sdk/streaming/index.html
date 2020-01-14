@@ -222,6 +222,67 @@ transcription).</p>
   <ul class="nav-tabs"></ul>
   <div class="tab-content">
 
+<div class="tab-pane" title="Python">
+  <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">juzu</span>
+
+serverAddress = <span style="color:#ed9d13">&#39;127.0.0.1:2727&#39;</span>
+
+<span style="color:#999;font-style:italic"># set insecure=True for connecting to server not using TLS</span>
+client = juzu.Client(serverAddress, insecure=False)
+
+<span style="color:#999;font-style:italic"># get list of available models</span>
+modelResp = client.ListModels()
+<span style="color:#6ab825;font-weight:bold">for</span> model <span style="color:#6ab825;font-weight:bold">in</span> modelResp.models:
+    <span style="color:#6ab825;font-weight:bold">print</span>(<span style="color:#ed9d13">&#34;ID = {}</span><span style="color:#ed9d13">\t</span><span style="color:#ed9d13"> Name = {}</span><span style="color:#ed9d13">\t</span><span style="color:#ed9d13"> [SampleRate = {} Hz]&#34;</span>.format(model.<span style="color:#24909d">id</span>, model.name, model.attributes.sample_rate))
+
+<span style="color:#999;font-style:italic"># use the first available model</span>
+juzuModelID = modelResp.models[<span style="color:#3677a9">0</span>]
+
+<span style="color:#999;font-style:italic"># Using cubic model to transcribe; Cubicsvr must also be</span>
+<span style="color:#999;font-style:italic"># running and the address:port provided in the Juzu server</span>
+<span style="color:#999;font-style:italic"># config file. The cubic models and their ID on Cubicsvr can</span>
+<span style="color:#999;font-style:italic"># found in cubicsvr.cfg.toml or be obtained via sdk-cubic.</span>
+cubicModelID = <span style="color:#ed9d13">&#34;1&#34;</span>
+
+cfg = juzu.DiarizationConfig(
+    model_id = juzuModel.<span style="color:#24909d">id</span>,
+    cubic_model_id = cubicModelID,
+    num_speakers = <span style="color:#3677a9">2</span>,               <span style="color:#999;font-style:italic"># number of speakers expected in the audio file</span>
+    audio_encoding = <span style="color:#ed9d13">&#34;WAV&#34;</span>,         <span style="color:#999;font-style:italic"># supported : &#34;RAW_LINEAR16&#34;, &#34;FLAC&#34;, &#34;WAV&#34;</span>
+    sample_rate = <span style="color:#3677a9">16000</span>,            <span style="color:#999;font-style:italic"># must match juzu model&#39;s expected sample rate</span>
+)
+
+<span style="color:#999;font-style:italic"># client.StreamingDiarize takes any binary</span>
+<span style="color:#999;font-style:italic"># stream object that has a read(nBytes) method.</span>
+<span style="color:#999;font-style:italic"># The method should return nBytes from the stream.</span>
+
+<span style="color:#999;font-style:italic"># open audio file stream</span>
+audio = <span style="color:#24909d">open</span>(<span style="color:#ed9d13">&#39;test.wav&#39;</span>, <span style="color:#ed9d13">&#39;rb&#39;</span>)
+
+<span style="color:#999;font-style:italic"># helper function convert protobuf duration objects</span>
+<span style="color:#999;font-style:italic"># (which stores the time split into in integer seconds</span>
+<span style="color:#999;font-style:italic"># and integer nano seconds) into single floating value</span>
+<span style="color:#999;font-style:italic"># in seconds</span>
+<span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">protoDurToSec</span>(dur):
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#24909d">float</span>(dur.seconds) + <span style="color:#24909d">float</span>(dur.nanos) * <span style="color:#3677a9">1e-9</span>
+
+<span style="color:#999;font-style:italic"># defining function to print speaker segments and transcripts to screen</span>
+<span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">handleResults</span>(diarizationResp):
+    <span style="color:#6ab825;font-weight:bold">for</span> result <span style="color:#6ab825;font-weight:bold">in</span> diarizationResp.results:
+        <span style="color:#6ab825;font-weight:bold">for</span> segment <span style="color:#6ab825;font-weight:bold">in</span> result.segments:
+            <span style="color:#6ab825;font-weight:bold">print</span>(<span style="color:#ed9d13">&#34;{start:.3f} - {end:.3f}</span><span style="color:#ed9d13">\t</span><span style="color:#ed9d13">{speaker}:</span><span style="color:#ed9d13">\t</span><span style="color:#ed9d13">{transcript}</span><span style="color:#ed9d13">\n</span><span style="color:#ed9d13">&#34;</span>.format(
+                start = protoDurToSec(segment.start_time),
+                end = protoDurToSec(segment.end_time),
+                speaker = segment.speaker_label,
+                transcript = segment.transcript,
+                ))
+
+<span style="color:#999;font-style:italic"># sending streaming request to Juzu and</span>
+<span style="color:#999;font-style:italic"># waiting for results to return</span>
+<span style="color:#6ab825;font-weight:bold">for</span> resp <span style="color:#6ab825;font-weight:bold">in</span> client.StreamingDiarize(cfg, audio):
+    handleResults(resp)</code></pre></div>
+</div>
+
 <div class="tab-pane" title="C#">
   <h4 id="program-cs">Program.cs</h4>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#6ab825;font-weight:bold">using</span> <span style="color:#447fcf;text-decoration:underline">System</span>;
@@ -308,6 +369,117 @@ chosen correctly.</p>
 <div class='code-tabs'>
   <ul class="nav-tabs"></ul>
   <div class="tab-content">
+
+<div class="tab-pane" title="Python">
+  <p>This example requires the <a href="http://people.csail.mit.edu/hubert/pyaudio/">pyaudio</a>
+module to stream audio from a microphone. Instructions for installing pyaudio
+for different systems are available at the link. On most platforms, this is
+simply <code>pip install pyaudio</code></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">juzu</span>
+<span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">pyaudio</span>
+<span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">threading</span>
+
+serverAddress = <span style="color:#ed9d13">&#39;127.0.0.1:2727&#39;</span>
+
+<span style="color:#999;font-style:italic"># set insecure=True for connecting to server not using TLS</span>
+client = juzu.Client(serverAddress, insecure=True)
+
+<span style="color:#999;font-style:italic"># get list of available models</span>
+modelResp = client.ListModels()
+
+<span style="color:#999;font-style:italic"># use the first available model</span>
+juzuModel = modelResp.models[<span style="color:#3677a9">0</span>]
+
+<span style="color:#999;font-style:italic"># creating diarization config to transcribe + diarize</span>
+<span style="color:#999;font-style:italic"># audio stream from microphone</span>
+cfg = juzu.DiarizationConfig(
+    model_id = juzuModel.<span style="color:#24909d">id</span>,
+    cubic_model_id = <span style="color:#ed9d13">&#34;1&#34;</span>,
+    num_speakers = <span style="color:#3677a9">2</span>,
+    audio_encoding = <span style="color:#ed9d13">&#34;RAW_LINEAR16&#34;</span>,
+    sample_rate = juzuModel.attributes.sample_rate,
+)
+
+<span style="color:#999;font-style:italic"># client.StreamingDiarize takes any binary stream object that has a read(nBytes)</span>
+<span style="color:#999;font-style:italic"># method. The method should return nBytes from the stream. So pyaudio is a suitable</span>
+<span style="color:#999;font-style:italic"># library to use here for streaming audio from the microphone. Other libraries or</span>
+<span style="color:#999;font-style:italic"># modules may also be used as long as they have the read method or have been wrapped</span>
+<span style="color:#999;font-style:italic"># to do so.</span>
+
+<span style="color:#999;font-style:italic"># defining class to wrap around microphone stream from py audio</span>
+<span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">MicStream</span>(<span style="color:#24909d">object</span>):
+
+    <span style="color:#6ab825;font-weight:bold">def</span> __init__(self, sampleRate):
+
+        self._p = pyaudio.PyAudio()
+        <span style="color:#999;font-style:italic"># opening mic stream, recording 16 bit little endian integer samples, mono channel</span>
+        self._stream = self._p.<span style="color:#24909d">open</span>(format=pyaudio.paInt16, channels=<span style="color:#3677a9">1</span>, rate=sampleRate, <span style="color:#24909d">input</span>=True)
+        self._stopped = False
+
+    <span style="color:#6ab825;font-weight:bold">def</span> __del__(self):
+        self._stream.close()
+        self._p.terminate()
+
+    <span style="color:#999;font-style:italic"># streamingDiarize requires a read(nBytes) method</span>
+    <span style="color:#999;font-style:italic"># that return a list of nBytes from the stream. An</span>
+    <span style="color:#999;font-style:italic"># empty list signals the end of stream.</span>
+    <span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">read</span>(self, nBytes):
+        <span style="color:#999;font-style:italic"># if stream is stopped, return empty list to</span>
+        <span style="color:#999;font-style:italic"># signal end of stream to Juzu</span>
+        <span style="color:#6ab825;font-weight:bold">if</span> self._stopped:
+            <span style="color:#6ab825;font-weight:bold">return</span> []
+        <span style="color:#6ab825;font-weight:bold">return</span> self._stream.read(nBytes)
+
+    <span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">pause</span>(self):
+        self._stream.stop_stream()
+
+    <span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">resume</span>(self):
+        self._stream.start_stream()
+
+    <span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">stop</span>(self):
+        self._stopped = True
+
+
+audio = MicStream(juzuModel.attributes.sample_rate)
+
+<span style="color:#999;font-style:italic"># helper function convert protobuf duration objects</span>
+<span style="color:#999;font-style:italic"># (which stores the time split into in integer seconds</span>
+<span style="color:#999;font-style:italic"># and integer nano seconds) into single floating value</span>
+<span style="color:#999;font-style:italic"># in seconds</span>
+<span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">protoDurToSec</span>(dur):
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#24909d">float</span>(dur.seconds) + <span style="color:#24909d">float</span>(dur.nanos) * <span style="color:#3677a9">1e-9</span>
+
+<span style="color:#999;font-style:italic"># starting thread to send streaming request to juzu</span>
+<span style="color:#999;font-style:italic"># and process results once they come back after the</span>
+<span style="color:#999;font-style:italic"># stream ends.</span>
+<span style="color:#6ab825;font-weight:bold">def</span> <span style="color:#447fcf">streamToJuzu</span>(cfg, audio):
+    <span style="color:#6ab825;font-weight:bold">try</span>:
+        <span style="color:#6ab825;font-weight:bold">for</span> resp <span style="color:#6ab825;font-weight:bold">in</span> client.StreamingDiarize(cfg, audio):
+            <span style="color:#6ab825;font-weight:bold">for</span> result <span style="color:#6ab825;font-weight:bold">in</span> resp.results:
+                <span style="color:#6ab825;font-weight:bold">for</span> segment <span style="color:#6ab825;font-weight:bold">in</span> result.segments:
+                    <span style="color:#6ab825;font-weight:bold">print</span>(<span style="color:#ed9d13">&#34;{start:.3f} - {end:.3f}</span><span style="color:#ed9d13">\t</span><span style="color:#ed9d13">{speaker}:</span><span style="color:#ed9d13">\t</span><span style="color:#ed9d13">{transcript}</span><span style="color:#ed9d13">\n</span><span style="color:#ed9d13">&#34;</span>.format(
+                        start = protoDurToSec(segment.start_time),
+                        end = protoDurToSec(segment.end_time),
+                        speaker = segment.speaker_label,
+                        transcript = segment.transcript,
+                        ))
+    <span style="color:#6ab825;font-weight:bold">except</span> <span style="color:#bbb">Exception</span> <span style="color:#6ab825;font-weight:bold">as</span> ex:
+        <span style="color:#6ab825;font-weight:bold">print</span>(<span style="color:#ed9d13">&#34;[error]: streaming diarization failed: {}&#34;</span>.format(ex))
+
+streamThread = threading.Thread(target=streamToJuzu, args=(cfg,audio))
+streamThread.setDaemon(True)
+streamThread.start()
+
+<span style="color:#999;font-style:italic"># waiting for user to end mic stream</span>
+<span style="color:#6ab825;font-weight:bold">print</span>(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\n</span><span style="color:#ed9d13">Streaming audio to Juzu server ...</span><span style="color:#ed9d13">\n</span><span style="color:#ed9d13">&#34;</span>)
+k = <span style="color:#24909d">input</span>(<span style="color:#ed9d13">&#34;-- Press Enter key to stop stream --&#34;</span>)
+
+<span style="color:#6ab825;font-weight:bold">print</span>(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\n</span><span style="color:#ed9d13">Stopping Stream ...&#34;</span>)
+audio.stop()
+
+<span style="color:#6ab825;font-weight:bold">print</span>(<span style="color:#ed9d13">&#34;Waiting for results ...&#34;</span>)
+streamThread.join()</code></pre></div>
+</div>
 
 <div class="tab-pane" title="C#">
   <p>We do not currently have example C# code for streaming from a microphone. Simply

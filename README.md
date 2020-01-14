@@ -21,12 +21,15 @@ repository.
 Code generation has the following dependencies:
   - The protobuf compiler itself (protoc)
   - The protobuf documentation generation plugin (protoc-gen-doc)
+  - The python plugins (grpcio-tools and googleapis-common-protos)
   - The golang plugins (protoc-gen-go and protoc-gen-grpc-gateway)
   - The static website generator (hugo)
 
 A few system dependencies are required:
   - Go >= 1.12
   - git
+  - python3
+  - virtualenv
   - wget
 
 The top level Makefile can set up all other dependencies.
@@ -80,6 +83,7 @@ git checkout -b version-update-v$NEW_VERSION
 
 sed -i 's|grpc/go-juzu v[0-9.]*|grpc/go-juzu v'$NEW_VERSION'|g' grpc/go-juzu/juzupb/gw/go.mod
 sed -i 's|<Version>[0-9.]*</Version>|<Version>'$NEW_VERSION'</Version>|g' grpc/csharp-juzu/juzu.csproj
+sed -i 's|version='\''[0-9.]*'\''|version='\'$NEW_VERSION\''|g' grpc/py-juzu/setup.py
 sed -i 's|^VERSION="[0-9.]*"|VERSION="'$NEW_VERSION'"|g' grpc/Makefile
 
 git commit -m "Update version to v$NEW_VERSION"

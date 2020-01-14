@@ -11,11 +11,12 @@ TOP := $(shell pwd)
 DEPSBIN := ${TOP}/deps/bin
 DEPSGO := ${TOP}/deps/go
 DEPSTMP := ${TOP}/deps/tmp
+DEPSVENV := ${TOP}/deps/venv
 $(shell mkdir -p $(DEPSBIN) $(DEPSGO) $(DEPSTMP))
 
 export PATH := ${DEPSBIN}:${DEPSGO}/bin:$(PATH)
 
-deps: deps-protoc deps-hugo deps-gendoc deps-gengo deps-gengateway deps-dotnet
+deps: deps-protoc deps-hugo deps-gendoc deps-gengo deps-gengateway deps-dotnet deps-py
 
 deps-protoc: ${DEPSBIN}/protoc
 ${DEPSBIN}/protoc:
@@ -49,8 +50,15 @@ ${DEPSBIN}/dotnet:
 		"https://download.visualstudio.microsoft.com/download/pr/d731f991-8e68-4c7c-8ea0-fad5605b077a/49497b5420eecbd905158d86d738af64/dotnet-sdk-3.1.100-linux-x64.tar.gz"
 	cd ${DEPSBIN} && tar -C ./ -xzvf dotnet-sdk-3.1.100-linux-x64.tar.gz
 
+deps-py: ${DEPSVENV}/.done
+${DEPSVENV}/.done:
+	virtualenv -p python3 ${DEPSVENV}
+	source ${DEPSVENV}/bin/activate && pip install grpcio-tools==1.20.0 googleapis-common-protos==1.5.9 && deactivate
+	touch $@
+
 gen: deps
-	@ PROTOINC=${DEPSGO}/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.9.0/third_party/googleapis \
+	@ source ${DEPSVENV}/bin/activate && \
+		PROTOINC=${DEPSGO}/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.9.0/third_party/googleapis \
 		$(MAKE) -C grpc
 	@ pushd docs-src && hugo -d ../docs && popd
 
