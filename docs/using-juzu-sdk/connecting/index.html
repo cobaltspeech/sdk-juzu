@@ -211,11 +211,23 @@ those to point to your server instance.</p>
 
 <p>The following code snippet connects to the server and queries its version.  It
 uses our recommended default setup, expecting the server to be listening on a
-TLS encrypted connection,  as the demo server does.</p>
+TLS encrypted connection. Examples showing how to connect to a server not using
+TLS is also shown in the <a href="#insecure-connection">Insecure Connection</a> section.</p>
 
 <div class='code-tabs'>
   <ul class="nav-tabs"></ul>
   <div class="tab-content">
+
+<div class="tab-pane" title="Python">
+  <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">juzu</span>
+
+serverAddress = <span style="color:#ed9d13">&#34;127.0.0.1:2727&#34;</span>
+
+client = juzu.Client(serverAddress)
+
+resp = client.Version()
+<span style="color:#6ab825;font-weight:bold">print</span>(resp)</code></pre></div>
+</div>
 
 <div class="tab-pane" title="C#">
   <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#6ab825;font-weight:bold">var</span> serverAddress = <span style="color:#ed9d13">&#34;127.0.0.1:2727&#34;</span>;
@@ -246,6 +258,10 @@ can use:</p>
   <ul class="nav-tabs"></ul>
   <div class="tab-content">
 
+<div class="tab-pane" title="Python">
+  <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">client = juzu.Client(serverAddress, insecure=True)</code></pre></div>
+</div>
+
 <div class="tab-pane" title="C#">
   <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#6ab825;font-weight:bold">var</span> insecure = <span style="color:#6ab825;font-weight:bold">true</span>;
 <span style="color:#6ab825;font-weight:bold">var</span> client = <span style="color:#6ab825;font-weight:bold">new</span> Client (serverAddress, insecure);
@@ -274,6 +290,10 @@ authenticated TLS. This can be done with:</p>
 <div class='code-tabs'>
   <ul class="nav-tabs"></ul>
   <div class="tab-content">
+
+<div class="tab-pane" title="Python">
+  <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">client = juzu.Client(serverAddress, clientCertificate=certPem, clientKey=keyPem)</code></pre></div>
+</div>
 
 <div class="tab-pane" title="C#">
   <h4 id="authenticating-server-certificate">Authenticating Server Certificate</h4>

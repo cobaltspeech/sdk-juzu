@@ -4,7 +4,7 @@ title: "Juzu SDK Documentation"
 
 # Juzu API Overview
 
-Juzu is Cobalt's speaker diarization engine. It can be deployed on-prem and accessed over the network or on your local machine via an API. We currently support C# and are adding support for more languages.
+Juzu is Cobalt's speaker diarization engine. It can be deployed on-prem and accessed over the network or on your local machine via an API. We currently support C# and Python, and are adding support for more languages.
 
 Once running, Juzu's API provides a method to which you can stream audio. This audio can either be from a microphone or a file. We recommend uncompressed WAV or lossless compression such as FLAC as the encoding, but we can support other formats as well upon request.
 
@@ -265,7 +265,7 @@ Cubic as well for transcription and aiding the diarization process.  This server
 exports Juzu's functionality over the gRPC protocol.  The
 https://github.com/cobaltspeech/sdk-juzu repository contains the SDK that you
 can use in your application to communicate with the Juzu server. This SDK is
-currently available for C# and we would be happy to talk to you if you need
-support for other languages. Most of the core SDK is generated automatically
-using the gRPC tools, and Cobalt provides a top level package for more
-convenient API calls.
+currently available for C# and Python, and we would be happy to talk to you if
+you need support for other languages. Most of the core SDK is generated
+automatically using the gRPC tools, and Cobalt provides a top level package for
+more convenient API calls.

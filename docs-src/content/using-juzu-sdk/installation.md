@@ -8,6 +8,15 @@ Instructions for installing the SDK are language specific.
 
 <!--more-->
 
+### Python
+
+The Python SDK depends on Python >= 3.5. You may use pip to perform a system-wide install, or use virtualenv for a local install.
+
+```bash
+pip install --upgrade pip
+pip install "git+https://github.com/cobaltspeech/sdk-juzu#egg=cobalt-juzu&subdirectory=grpc/py-juzu"
+```
+
 ### C\#
 
 The C# SDK utilizes the [NuGet package manager](https://www.nuget.org).  The package is called `Juzu-SDK`, under the owners name of `CobaltSpeech`.

@@ -17,9 +17,25 @@ those to point to your server instance.
 
 The following code snippet connects to the server and queries its version.  It
 uses our recommended default setup, expecting the server to be listening on a
-TLS encrypted connection,  as the demo server does.
+TLS encrypted connection. Examples showing how to connect to a server not using
+TLS is also shown in the [Insecure Connection](#insecure-connection) section.
 
 {{%tabs %}}
+
+{{% tab "Python" %}}
+
+```py
+import juzu
+
+serverAddress = "127.0.0.1:2727"
+
+client = juzu.Client(serverAddress)
+
+resp = client.Version()
+print(resp)
+```
+
+{{% /tab %}}
 
 {{% tab "C#" %}}
 
@@ -51,6 +67,14 @@ can use:
 
 {{%tabs %}}
 
+{{% tab "Python" %}}
+
+```py
+client = juzu.Client(serverAddress, insecure=True)
+```
+
+{{% /tab %}}
+
 {{% tab "C#" %}}
 
 ``` csharp
@@ -80,8 +104,15 @@ authenticated TLS. This can be done with:
 
 {{%tabs %}}
 
-{{% tab "C#" %}}
+{{% tab "Python" %}}
 
+```py
+client = juzu.Client(serverAddress, clientCertificate=certPem, clientKey=keyPem)
+```
+
+{{% /tab %}}
+
+{{% tab "C#" %}}
 
 #### Authenticating Server Certificate
 

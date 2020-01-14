@@ -1,18 +1,26 @@
 # Copyright (2019) Cobalt Speech and Language Inc.
 
-.PHONY: all go cs cs_push cs_deps docs clean
+.PHONY: all go py cs cs_push cs_deps py-test docs clean
 
-all: go cs docs
+all: go py cs docs
 
+ifeq ($(PROTOINC),)
+$(error "env variable PROTOINC must be defined to the location of googleapis proto files")
+endif
 
 GO_OUTDIR=go-juzu/juzupb
+PY_OUTDIR=py-juzu/juzu
 
 DOCS_OUTDIR=../docs-src/content/protobuf
 
 docs: ${DOCS_OUTDIR}/_index.md
 
 go: ${GO_OUTDIR}/juzu.pb.go ${GO_OUTDIR}/gw/juzu.pb.gw.go
+py: $(PY_OUTDIR)/juzu_pb2.py ${PY_OUTDIR}/juzu_pb2_grpc.py py-test
 
+#########################
+# Go SDK 
+#########################
 ${GO_OUTDIR}/juzu.pb.go: juzu.proto
 	mkdir -p ${GO_OUTDIR}
 	protoc -I . -I ${PROTOINC} --go_out=plugins=grpc:"${GO_OUTDIR}" $<
@@ -37,9 +45,28 @@ ${GO_OUTDIR}/gw/juzu.pb.gw.go: juzu.proto
 	sed -i -E "s/New[A-Za-z]*Client/juzupb.&/" $@
 	go fmt $@
 
-## C#
+#########################
+# Python SDK 
+#########################
+
+${PY_OUTDIR}/juzu_pb2.py: juzu.proto
+	mkdir -p ${PY_OUTDIR}
+	python -m grpc_tools.protoc -I . -I ${PROTOINC} --python_out=${PY_OUTDIR} $<
+
+${PY_OUTDIR}/juzu_pb2_grpc.py: juzu.proto
+	mkdir -p ${PY_OUTDIR}
+	python -m grpc_tools.protoc -I . -I ${PROTOINC} --grpc_python_out=${PY_OUTDIR} $<
+
+py-test:
+	cd py-juzu/juzu && python test_client.py
+	cd py-juzu/juzu && python test_tls.py
+
+#########################
+# C# SDK 
+#########################
+
 ## https://docs.microsoft.com/en-us/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli
-VERSION="0.9.2"
+VERSION="0.9.3"
 NUGET_API_KEY="" # Must be set to push the nuget package.
 
 cs_deps:
