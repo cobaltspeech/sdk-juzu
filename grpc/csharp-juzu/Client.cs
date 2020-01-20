@@ -2,13 +2,14 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 
 namespace JuzusvrClient {
 
-    public delegate void ResponseHandler(CobaltSpeech.Juzu.DiarizationResponse resp);
-    
+    public delegate void ResponseHandler (CobaltSpeech.Juzu.DiarizationResponse resp);
+
     public class Client {
 
         private string serverURL;
@@ -19,9 +20,9 @@ namespace JuzusvrClient {
         // Creates a client to Juzusvr. If insecure is set 
         // to True, TLS will be disabled.
         public Client (string url, bool insecure) {
-            
+
             this.serverURL = url;
- 
+
             if (insecure) {
                 // no TLS
                 this.creds = Grpc.Core.ChannelCredentials.Insecure;
@@ -41,9 +42,9 @@ namespace JuzusvrClient {
         // that can validate the certificate presented by the server.
         public Client (string url, string rootCert) {
             this.serverURL = url;
-            this.creds = new Grpc.Core.SslCredentials(rootCert);
-            this.channel = new Grpc.Core.Channel(url, this.creds);
-            this.client = client = new CobaltSpeech.Juzu.Juzu.JuzuClient(channel);
+            this.creds = new Grpc.Core.SslCredentials (rootCert);
+            this.channel = new Grpc.Core.Channel (url, this.creds);
+            this.client = client = new CobaltSpeech.Juzu.Juzu.JuzuClient (channel);
         }
 
         // Creates a client to Juzusvr with mutually authenticated TLS.
@@ -51,14 +52,14 @@ namespace JuzusvrClient {
         // and the client's PEM private key must be provided as strings.
         public Client (string url, string rootCert, string clientCert, string clientKey) {
             this.serverURL = url;
-            var keyCertPair = new Grpc.Core.KeyCertificatePair(clientCert, clientKey);
-            this.creds = new Grpc.Core.SslCredentials(rootCert, keyCertPair);
-            this.channel = new Grpc.Core.Channel(url, this.creds);
-            this.client = client = new CobaltSpeech.Juzu.Juzu.JuzuClient(channel);
+            var keyCertPair = new Grpc.Core.KeyCertificatePair (clientCert, clientKey);
+            this.creds = new Grpc.Core.SslCredentials (rootCert, keyCertPair);
+            this.channel = new Grpc.Core.Channel (url, this.creds);
+            this.client = client = new CobaltSpeech.Juzu.Juzu.JuzuClient (channel);
         }
 
         // Queries version of the server
-        public CobaltSpeech.Juzu.VersionResponse Version() {
+        public CobaltSpeech.Juzu.VersionResponse Version () {
             return this.client.Version (
                 new Google.Protobuf.WellKnownTypes.Empty ());
         }
@@ -110,7 +111,7 @@ namespace JuzusvrClient {
                     while (await call.ResponseStream.MoveNext ()) {
                         var response = call.ResponseStream.Current;
                         // Do stuff with the response
-                        handleFunc(response);
+                        handleFunc (response);
                     }
                 });
 
@@ -140,8 +141,57 @@ namespace JuzusvrClient {
                     await call.RequestStream.CompleteAsync ();
                 }
 
+                // At this point, the client does not send any more data over
+                // the channel to the server. The server will also not send
+                // anything back until the everything has been processed. If the
+                // gap between the end of data streaming and receiving the
+                // results is large, the channel could timeout and go into idle
+                // mode. Normally this doesn't happen because of keepalive
+                // pings, but in the gRPC API for C#, the keepalive feature is
+                // not implemented yet as of 20th January, 2020. So we setup a
+                // task below that pings for the Version of the server every
+                // minute as a workaround. This bit of code should be removed
+                // once keepalive feature is implemented and enabled in the
+                // channel options.
+
+                // Setting up a task to ping the version of the sever 
+                // every minute to keep the connection alive while no
+                // data is being sent by the client.
+                var cts = new CancellationTokenSource ();
+                CancellationToken ct = cts.Token;
+
+                var keepAlive = Task.Run (async () => {
+                    // Throw if already cancelled
+                    ct.ThrowIfCancellationRequested ();
+
+                    int waitInterval = 1 * 60000; // ping every 1 minute
+                    while (true) {
+                        // will wait in 1 second blocks and check if task has
+                        // been cancelled in between
+                        for (int currentWaitTime = 0; currentWaitTime < waitInterval; currentWaitTime += 1000) {
+                            await Task.Delay (1000);
+                            if (ct.IsCancellationRequested) {
+                                ct.ThrowIfCancellationRequested ();
+                            }
+                        }
+                        this.Version ();
+                    }
+                }, cts.Token); // passing same token to Task.Run
+
                 // Wait for the response to come back through the receiving stream
                 await responseReaderTask;
+
+                // Cancelling keep alive task
+                cts.Cancel ();
+                try {
+                    await keepAlive;
+                } catch (OperationCanceledException) {
+                    // expected, do nothing
+                } catch (Exception e) {
+                    Console.WriteLine ("{0}: failed to close keep alive thread", e);
+                } finally {
+                    cts.Dispose ();
+                }
             }
         }
     }
