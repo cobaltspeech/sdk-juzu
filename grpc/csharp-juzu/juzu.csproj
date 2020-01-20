@@ -2,7 +2,7 @@
   
   <PropertyGroup>
    <PackageId>Juzu-SDK</PackageId>
-    <Version>0.9.2</Version>
+    <Version>0.9.3-rc1</Version>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Authors>Shahruk Hossain</Authors>
     <Company>Cobalt Speech and Language, Inc.</Company>
@@ -15,8 +15,8 @@
   <ItemGroup>
     <PackageReference Include="Google.Api.CommonProtos" Version="1.7.0" />
     <PackageReference Include="Google.Protobuf" Version="3.10.0" />
-    <PackageReference Include="Grpc" Version="2.24.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.24.0">
+    <PackageReference Include="Grpc" Version="2.26.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.26.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
