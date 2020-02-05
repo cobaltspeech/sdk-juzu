@@ -15,7 +15,7 @@ $(shell mkdir -p $(DEPSBIN) $(DEPSGO) $(DEPSTMP))
 
 export PATH := ${DEPSBIN}:${DEPSGO}/bin:$(PATH)
 
-deps: deps-protoc deps-gendoc deps-gengo deps-gengateway
+deps: deps-protoc deps-hugo deps-gendoc deps-gengo deps-gengateway deps-dotnet
 
 deps-protoc: ${DEPSBIN}/protoc
 ${DEPSBIN}/protoc:
@@ -37,6 +37,12 @@ deps-gengateway: ${DEPSGO}/bin/protoc-gen-grpc-gateway
 ${DEPSGO}/bin/protoc-gen-grpc-gateway:
 	rm -rf $(DEPSTMP)/gengw
 	cd $(DEPSTMP) && mkdir gengw && cd gengw && go mod init tmp && GOPATH=${DEPSGO} go get github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@v1.9.0
+
+deps-dotnet: ${DEPSBIN}/dotnet
+${DEPSBIN}/dotnet:
+	cd ${DEPSBIN}/ && wget \
+		"https://download.visualstudio.microsoft.com/download/pr/d731f991-8e68-4c7c-8ea0-fad5605b077a/49497b5420eecbd905158d86d738af64/dotnet-sdk-3.1.100-linux-x64.tar.gz"
+	cd ${DEPSBIN} && tar -C ./ -xzvf dotnet-sdk-3.1.100-linux-x64.tar.gz
 
 gen: deps
 	@ PROTOINC=${DEPSGO}/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.9.0/third_party/googleapis \
