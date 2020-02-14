@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name='cobalt-juzu',
     python_requires='>=3.5.0',
-    version='0.9.3',
+    version='0.9.4',
     description='This client library is designed to support the Cobalt API for speech diarization with Juzu',
     author='Cobalt Speech and Language Inc.',
     maintainer_email='tech@cobaltspeech.com',

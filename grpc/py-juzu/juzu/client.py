@@ -88,8 +88,8 @@ class Client(object):
         self._channelOpts.append(('grpc.http2.max_pings_without_data', 0))
 
         # Minimum time between sending successive ping frames without receiving any
-        # data frame, Int valued, milliseconds. Set to 10 seconds.
-        self._channelOpts.append(('grpc.http2.min_time_between_pings_ms', 10 * 1000))
+        # data frame, Int valued, milliseconds. Set to 6 minutes.
+        self._channelOpts.append(('grpc.http2.min_time_between_pings_ms', 6 * 60 * 1000))
 
         if insecure:
             # no transport layer security (TLS)
