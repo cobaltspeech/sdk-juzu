@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 
@@ -164,7 +165,8 @@ namespace JuzusvrClient {
                     int bytesRead;
                     var buffer = new byte[chunkSize];
                     while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0) {
-                        var bytes = Google.Protobuf.ByteString.CopyFrom(buffer);
+                        var bufferNewBytes = buffer.Take(bytesRead).ToArray();
+                        var bytes = Google.Protobuf.ByteString.CopyFrom(bufferNewBytes);
                         request.Audio.Data = bytes;
                         await call.RequestStream.WriteAsync(request);
                     }
