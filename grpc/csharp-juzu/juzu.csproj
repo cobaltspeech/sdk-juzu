@@ -2,7 +2,7 @@
   
   <PropertyGroup>
    <PackageId>Juzu-SDK</PackageId>
-    <Version>0.9.4</Version>
+    <Version>0.9.5</Version>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Authors>Shahruk Hossain</Authors>
     <Company>Cobalt Speech and Language, Inc.</Company>
