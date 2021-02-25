@@ -1,6 +1,6 @@
 # Copyright (2019) Cobalt Speech and Language Inc.
 
-.PHONY: all go py cs cs_push cs_deps py-test docs clean
+.PHONY: all go py cs cs_push cs_deps py-test go-test docs clean
 
 all: go py cs docs
 
@@ -15,15 +15,15 @@ DOCS_OUTDIR=../docs-src/content/protobuf
 
 docs: ${DOCS_OUTDIR}/_index.md
 
-go: ${GO_OUTDIR}/juzu.pb.go ${GO_OUTDIR}/gw/juzu.pb.gw.go
-py: $(PY_OUTDIR)/juzu_pb2.py ${PY_OUTDIR}/juzu_pb2_grpc.py py-test
+go: go-pb go-gw go-test
+py: py-pb py-grpc py-test
 
 #########################
 # Go SDK 
 #########################
-${GO_OUTDIR}/juzu.pb.go: juzu.proto
+go-pb: juzu.proto
 	mkdir -p ${GO_OUTDIR}
-	protoc -I . -I ${PROTOINC} --go_out=plugins=grpc:"${GO_OUTDIR}" $<
+	protoc -I . -I ${PROTOINC} --go_out=plugins=grpc:"${GO_OUTDIR}" juzu.proto
 
 # grpc-gateway assumes that the gateway package lives in the same package as the
 # main proto package.  However, the gateway code is not necessary for clients,
@@ -31,31 +31,34 @@ ${GO_OUTDIR}/juzu.pb.go: juzu.proto
 # to be edited so it can use juzupb as an external package.  There is a test in
 # go-cubic/client_test.go that verifies that this modified package still builds
 # and serves the gateway.
-${GO_OUTDIR}/gw/juzu.pb.gw.go: juzu.proto
+go-gw: juzu.proto
 	mkdir -p ${GO_OUTDIR}/gw
-	protoc -I . -I ${PROTOINC} --grpc-gateway_out=logtostderr=true:${GO_OUTDIR}/gw $<
-	sed -i -E "s/package juzupb/package gw/g" $@
-	sed -i -E "s/Package juzupb is/Package gw is/g" $@
-	sed -i -E "s|import \(|& \"github.com/cobaltspeech/sdk-juzu/grpc/go-juzu/juzupb\"|" $@
-	sed -i -E "s/protoReq /&juzupb\./g" $@
-	sed -i -E "s/(protoReq )juzupb\.([A-Za-z]+\.)/\1\2/g" $@
-	sed -i -E "s/, client /, client juzupb./g" $@
-	sed -i -E "s/Client /, client juzupb./g" $@
-	sed -i -E "s/[^(]*Client, runtime/juzupb.&/" $@
-	sed -i -E "s/New[A-Za-z]*Client/juzupb.&/" $@
-	go fmt $@
+	protoc -I . -I ${PROTOINC} --grpc-gateway_out=logtostderr=true:${GO_OUTDIR}/gw juzu.proto
+	sed -i -E "s/package juzupb/package gw/g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/Package juzupb is/Package gw is/g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s|import \(|& \"github.com/cobaltspeech/sdk-juzu/grpc/go-juzu/juzupb\"|" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/protoReq /&juzupb\./g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/(protoReq )juzupb\.([A-Za-z]+\.)/\1\2/g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/, client /, client juzupb./g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/Client /, client juzupb./g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/[^(]*Client, runtime/juzupb.&/" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/New[A-Za-z]*Client/juzupb.&/" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	cd $(dir ${GO_OUTDIR}/gw/juzu.pb.gw.go) && go fmt $(notdir ${GO_OUTDIR}/gw/juzu.pb.gw.go)
+
+go-test:
+	cd go-juzu && go test
 
 #########################
 # Python SDK 
 #########################
 
-${PY_OUTDIR}/juzu_pb2.py: juzu.proto
+py-pb: juzu.proto
 	mkdir -p ${PY_OUTDIR}
-	python -m grpc_tools.protoc -I . -I ${PROTOINC} --python_out=${PY_OUTDIR} $<
+	python -m grpc_tools.protoc -I . -I ${PROTOINC} --python_out=${PY_OUTDIR} juzu.proto
 
-${PY_OUTDIR}/juzu_pb2_grpc.py: juzu.proto
+py-grpc: juzu.proto
 	mkdir -p ${PY_OUTDIR}
-	python -m grpc_tools.protoc -I . -I ${PROTOINC} --grpc_python_out=${PY_OUTDIR} $<
+	python -m grpc_tools.protoc -I . -I ${PROTOINC} --grpc_python_out=${PY_OUTDIR} juzu.proto
 
 py-test:
 	cd py-juzu/juzu && python test_client.py
