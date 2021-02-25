@@ -11,7 +11,7 @@ setup(
     url='https://cobaltspeech.github.io/sdk-juzu',
     packages=["juzu"],
     install_requires=[
-        'googleapis-common-protos==1.5.9',
-        'grpcio-tools==1.20.0'
+        'googleapis-common-protos==1.52.0',
+        'grpcio-tools==1.35.0'
     ]
 )
