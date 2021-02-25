@@ -6,81 +6,135 @@ import juzu_pb2 as juzu__pb2
 
 
 class JuzuStub(object):
-  """Service that implements the Cobalt Juzu Diarization API.
-  """
-
-  def __init__(self, channel):
-    """Constructor.
-
-    Args:
-      channel: A grpc.Channel.
+    """Service that implements the Cobalt Juzu Diarization API.
     """
-    self.Version = channel.unary_unary(
-        '/cobaltspeech.juzu.Juzu/Version',
-        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        response_deserializer=juzu__pb2.VersionResponse.FromString,
-        )
-    self.ListModels = channel.unary_unary(
-        '/cobaltspeech.juzu.Juzu/ListModels',
-        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-        response_deserializer=juzu__pb2.ListModelsResponse.FromString,
-        )
-    self.StreamingDiarize = channel.stream_stream(
-        '/cobaltspeech.juzu.Juzu/StreamingDiarize',
-        request_serializer=juzu__pb2.StreamingDiarizeRequest.SerializeToString,
-        response_deserializer=juzu__pb2.DiarizationResponse.FromString,
-        )
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Version = channel.unary_unary(
+                '/cobaltspeech.juzu.Juzu/Version',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=juzu__pb2.VersionResponse.FromString,
+                )
+        self.ListModels = channel.unary_unary(
+                '/cobaltspeech.juzu.Juzu/ListModels',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=juzu__pb2.ListModelsResponse.FromString,
+                )
+        self.StreamingDiarize = channel.stream_stream(
+                '/cobaltspeech.juzu.Juzu/StreamingDiarize',
+                request_serializer=juzu__pb2.StreamingDiarizeRequest.SerializeToString,
+                response_deserializer=juzu__pb2.DiarizationResponse.FromString,
+                )
 
 
 class JuzuServicer(object):
-  """Service that implements the Cobalt Juzu Diarization API.
-  """
-
-  def Version(self, request, context):
-    """Queries the Version of the Server.
+    """Service that implements the Cobalt Juzu Diarization API.
     """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
 
-  def ListModels(self, request, context):
-    """Retrieves a list of available diarization models.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def Version(self, request, context):
+        """Queries the Version of the Server.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-  def StreamingDiarize(self, request_iterator, context):
-    """Performs bidirectional streaming to enable on-the-go processing of 
-    audio files, as well as the option to receive partial transcripts of 
-    audio along with speaker IDs. This method is not truly streaming for 
-    diarization yet, as results are received after specific chunks of audio
-    have been sent. This method is only available via GRPC and not via HTTP+JSON.
-    However, a web browser may use websockets to use this service.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def ListModels(self, request, context):
+        """Retrieves a list of available diarization models.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def StreamingDiarize(self, request_iterator, context):
+        """Performs bidirectional streaming to enable on-the-go processing of 
+        audio files, as well as the option to receive partial transcripts of 
+        audio along with speaker IDs. This method is not truly streaming for 
+        diarization yet, as results are received after specific chunks of audio
+        have been sent. This method is only available via GRPC and not via HTTP+JSON.
+        However, a web browser may use websockets to use this service.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_JuzuServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'Version': grpc.unary_unary_rpc_method_handler(
-          servicer.Version,
-          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          response_serializer=juzu__pb2.VersionResponse.SerializeToString,
-      ),
-      'ListModels': grpc.unary_unary_rpc_method_handler(
-          servicer.ListModels,
-          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-          response_serializer=juzu__pb2.ListModelsResponse.SerializeToString,
-      ),
-      'StreamingDiarize': grpc.stream_stream_rpc_method_handler(
-          servicer.StreamingDiarize,
-          request_deserializer=juzu__pb2.StreamingDiarizeRequest.FromString,
-          response_serializer=juzu__pb2.DiarizationResponse.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'cobaltspeech.juzu.Juzu', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+    rpc_method_handlers = {
+            'Version': grpc.unary_unary_rpc_method_handler(
+                    servicer.Version,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=juzu__pb2.VersionResponse.SerializeToString,
+            ),
+            'ListModels': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListModels,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=juzu__pb2.ListModelsResponse.SerializeToString,
+            ),
+            'StreamingDiarize': grpc.stream_stream_rpc_method_handler(
+                    servicer.StreamingDiarize,
+                    request_deserializer=juzu__pb2.StreamingDiarizeRequest.FromString,
+                    response_serializer=juzu__pb2.DiarizationResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'cobaltspeech.juzu.Juzu', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class Juzu(object):
+    """Service that implements the Cobalt Juzu Diarization API.
+    """
+
+    @staticmethod
+    def Version(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/cobaltspeech.juzu.Juzu/Version',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            juzu__pb2.VersionResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ListModels(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/cobaltspeech.juzu.Juzu/ListModels',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            juzu__pb2.ListModelsResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def StreamingDiarize(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_stream(request_iterator, target, '/cobaltspeech.juzu.Juzu/StreamingDiarize',
+            juzu__pb2.StreamingDiarizeRequest.SerializeToString,
+            juzu__pb2.DiarizationResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
