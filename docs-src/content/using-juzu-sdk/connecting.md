@@ -20,11 +20,10 @@ uses our recommended default setup, expecting the server to be listening on a
 TLS encrypted connection. Examples showing how to connect to a server not using
 TLS is also shown in the [Insecure Connection](#insecure-connection) section.
 
-{{%tabs %}}
+{{< tabs >}}
 
-{{% tab "Python" %}}
+{{< tab "Python" "py" >}}
 
-```py
 import juzu
 
 serverAddress = "127.0.0.1:2727"
@@ -33,13 +32,10 @@ client = juzu.Client(serverAddress)
 
 resp = client.Version()
 print(resp)
-```
 
-{{% /tab %}}
+{{< /tab >}}
 
-{{% tab "C#" %}}
-
-``` csharp
+{{< tab "C#" "csharp" >}}
 
 var serverAddress = "127.0.0.1:2727";
 
@@ -50,11 +46,10 @@ var client = new Client (serverAddress, insecure);
 // Get Version of the server
 var ver = client.Version ();
 Console.WriteLine ("Juzu: {0} Server: {1}", ver.Juzu, ver.Server);
-```
 
-{{% /tab %}}
+{{< /tab >}}
 
-{{%/tabs %}}
+{{< /tabs >}}
 
 ## Insecure Connection
 
@@ -65,26 +60,22 @@ Please note that if the server has TLS enabled, attempting to connect with an
 insecure client will fail. To connect to an instance of Juzu server without TLS enabled, you
 can use:
 
-{{%tabs %}}
+{{< tabs >}}
 
-{{% tab "Python" %}}
+{{< tab "Python" "py" >}}
 
-```py
 client = juzu.Client(serverAddress, insecure=True)
-```
 
-{{% /tab %}}
+{{< /tab >}}
 
-{{% tab "C#" %}}
+{{< tab "C#" "csharp" >}}
 
-``` csharp
 var insecure = true;
 var client = new Client (serverAddress, insecure);
-```
 
-{{% /tab %}}
+{{< /tab >}}
 
-{{%/tabs %}}
+{{< /tabs >}}
 
 ## Client Authentication
 
@@ -102,37 +93,31 @@ Please note that in the client-authentication mode, the client will still also
 verify the server's certificate, and therefore this setup uses mutually
 authenticated TLS. This can be done with:
 
-{{%tabs %}}
+{{< tabs >}}
 
-{{% tab "Python" %}}
+{{< tab "Python" "py" >}}
 
-```py
 client = juzu.Client(serverAddress, clientCertificate=certPem, clientKey=keyPem)
-```
 
-{{% /tab %}}
+{{< /tab >}}
 
-{{% tab "C#" %}}
+{{< tab "C#" "csharp" >}}
 
-#### Authenticating Server Certificate
-
-``` csharp
+// Authenticating Server Certificate
 var rootPem = File.ReadAllText("root.pem");
 var client = new Client (serverAddress, rootPem);
-```
 
-#### Mutual Authentication
+// OR
 
-``` csharp
+// Mutual Authentication
 var rootPem = File.ReadAllText("root.pem");
 var certPem = File.ReadAllText("cert.pem");
 var keyPem = File.ReadAllText("key.pem");
 var client = new Client (serverAddress, rootPem, certPem, keyPem);
-```
 
-{{% /tab %}}
+{{< /tab >}}
 
-{{%/tabs %}}
+{{< /tabs >}}
 
 where rootPem is the bytes of the certificate used to validate the server
 certificate and certPem & keyPem are the bytes of the client certificate and key

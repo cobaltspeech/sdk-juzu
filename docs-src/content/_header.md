@@ -1,3 +1,3 @@
-![Cobalt's SDK Documentation](/sdk-juzu/images/logo-white.png)
+![Cobalt's SDK Documentation](/images/logo-white.png)
 
 Juzu SDK -- Cobalt

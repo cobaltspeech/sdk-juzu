@@ -1,9 +1,8 @@
-baseURL = "https://cobaltspeech.github.io/sdk-juzu"
+relativeURLs = true
 
 languageCode = "en-us"
 DefaultContentLanguage = "en"
 title = "Juzu SDK -- Cobalt"
-theme = "docdock"
 pygmentsCodeFences = true
 pygmentsStyle = "native"
 
@@ -39,3 +38,11 @@ name = "<i class='fa fa-bookmark'></i> <label>Contact us</label>"
 identifier = "contactus"
 url = "https://www.cobaltspeech.com/contact"
 weight = 20
+
+[markup.goldmark.renderer]
+unsafe= true
+
+[module]
+[[module.imports]]
+    path = "github.com/cobaltspeech/docdock"
+    # Project theme
