@@ -26,3 +26,20 @@ NuGet allows 4 different ways to install.  Further instructions can be found on 
 ``` bash
 dotnet add package Juzu-SDK
 ```
+
+You can include the SDK in your *.csproj file as well:
+
+```csharp
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Juzu-SDK" Version="0.9.3" />
+  </ItemGroup>
+
+</Project>
+```
