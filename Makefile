@@ -28,18 +28,13 @@ $(shell mkdir -p $(DEPSBIN) $(DEPSGO) $(DEPSTMP))
 
 export PATH := ${DEPSBIN}:${DEPSGO}/bin:$(PATH)
 
-deps: deps-protoc deps-hugo deps-gendoc deps-gengo deps-gengateway deps-dotnet deps-py
+deps: deps-protoc deps-gendoc deps-gengo deps-gengateway deps-dotnet deps-py
 
 deps-protoc: ${DEPSBIN}/protoc
 ${DEPSBIN}/protoc:
 	cd ${DEPSBIN}/../ && wget \
 		"https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip" && \
 		unzip protoc-${PROTOC_VERSION}-linux-x86_64.zip && rm -f protoc-${PROTOC_VERSION}-linux-x86_64.zip
-
-deps-hugo: ${DEPSBIN}/hugo
-${DEPSBIN}/hugo:
-	cd ${DEPSBIN} && wget \
-		"https://github.com/gohugoio/hugo/releases/download/v0.55.4/hugo_0.55.4_Linux-64bit.tar.gz" -O - | tar xz hugo
 
 deps-gendoc: ${DEPSBIN}/protoc-gen-doc
 ${DEPSBIN}/protoc-gen-doc:
@@ -72,7 +67,6 @@ gen: deps
 	@ source ${DEPSVENV}/bin/activate && \
 		PROTOINC=${DEPSGO}/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v${PROTOC_GEN_GRPC_GATEWAY_VERSION}/third_party/googleapis \
 		$(MAKE) -C grpc
-	@ pushd docs-src && hugo -d ../docs && popd
 
 clean:
 	GOPATH=${DEPSGO} go clean -modcache
