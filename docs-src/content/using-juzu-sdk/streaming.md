@@ -22,11 +22,10 @@ see the protocol buffer specification file in the SDK repository ([grpc/juzu.pro
 The examples below use a WAV file as input to the streaming diarization (and
 transcription).
 
-{{%tabs %}}
+{{< tabs >}}
 
-{{% tab "Python" %}}
+{{< tab "Python" "py" >}}
 
-``` py
 import juzu
 
 serverAddress = '127.0.0.1:2727'
@@ -86,15 +85,10 @@ def handleResults(diarizationResp):
 for resp in client.StreamingDiarize(cfg, audio):
     handleResults(resp)
 
-```
+{{< /tab >}}
 
-{{% /tab %}}
+{{< tab "C#" "csharp">}}
 
-{{% tab "C#" %}}
-
-#### Program.cs
-
-``` csharp
 using System;
 using System.IO;
 using System.Net;
@@ -149,28 +143,10 @@ namespace JuzusvrClient {
         }
     }
 }
-```
 
-#### JuzusvrClient.csproj
+{{< /tab >}}
 
-``` csharp
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Juzu-SDK" Version="0.9.3" />
-  </ItemGroup>
-
-</Project>
-```
-
-{{% /tab %}}
-
-{{%/tabs %}}
+{{< /tabs >}}
 
 ### Streaming from microphone
 
@@ -179,16 +155,15 @@ libraries. There are several options available, and although the examples here u
 one, you may choose to use an alternative as long as the recording audio format is
 chosen correctly.
 
-{{%tabs %}}
+{{< tabs >}}
 
-{{% tab "Python" %}}
+{{< tab "Python" "py">}}
 
-This example requires the [pyaudio](http://people.csail.mit.edu/hubert/pyaudio/)
-module to stream audio from a microphone. Instructions for installing pyaudio
-for different systems are available at the link. On most platforms, this is
-simply `pip install pyaudio`
+# This example requires the pyaudio (http://people.csail.mit.edu/hubert/pyaudio/)
+# module to stream audio from a microphone. Instructions for installing pyaudio
+# for different systems are available at the link. On most platforms, this is
+# simply `pip install pyaudio`
 
-``` py
 import juzu
 import pyaudio
 import threading
@@ -294,17 +269,19 @@ audio.stop()
 print("Waiting for results ...")
 streamThread.join()
 
-```
+{{< /tab >}}
 
-{{% /tab %}}
+{{< tab "C#" "md" >}}
 
-{{% tab "C#" %}}
+// We do not currently have example C# code for streaming from a microphone. Simply
+// pass the bytes from the microphone the same as is done from the file in the
+// `Streaming from an audio file` example above via a class derived from `Stream.IO`
+// (https://docs.microsoft.com/en-us/dotnet/api/system.io.stream) with the
+// `int Read(buffer byte[], offset int, count int)` method implemented.
+//
+// See more at:
+// https://docs.microsoft.com/en-us/dotnet/api/system.io.stream.read?view=net-5.0#System_IO_Stream_Read_System_Byte___System_Int32_System_Int32_
 
-We do not currently have example C# code for streaming from a microphone. Simply
-pass the bytes from the microphone the same as is done from the file in the
-[`Streaming from an audio file`](#streaming-from-an-audio-file) example above via
-a class derived from [`Stream.IO`](https://docs.microsoft.com/en-us/dotnet/api/system.io.stream).
-with the [`int Read(buffer byte[], offset int, count int)`](https://docs.microsoft.com/en-us/dotnet/api/system.io.stream.read#System_IO_Stream_Read_System_Byte___System_Int32_System_Int32_) method implemented.
-{{% /tab %}}
+{{< /tab >}}
 
-{{%/tabs %}}
+{{< /tabs >}}
