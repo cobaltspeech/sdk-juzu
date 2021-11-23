@@ -4,7 +4,7 @@ syntax = "proto3";
 
 package cobaltspeech.juzu;
 
-option go_package = ".;juzupb";
+option go_package = "./;juzupb";
 option  csharp_namespace = "CobaltSpeech.Juzu";
 
 import "google/api/annotations.proto";
