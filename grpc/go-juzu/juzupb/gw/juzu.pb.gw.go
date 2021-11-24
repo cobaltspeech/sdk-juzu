@@ -44,7 +44,7 @@ func request_Juzu_Version_0(ctx context.Context, marshaler runtime.Marshaler, cl
 
 }
 
-func local_request_Juzu_Version_0(ctx context.Context, marshaler runtime.Marshaler, server JuzuServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Juzu_Version_0(ctx context.Context, marshaler runtime.Marshaler, server juzupb.JuzuServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq emptypb.Empty
 	var metadata runtime.ServerMetadata
 
@@ -62,7 +62,7 @@ func request_Juzu_ListModels_0(ctx context.Context, marshaler runtime.Marshaler,
 
 }
 
-func local_request_Juzu_ListModels_0(ctx context.Context, marshaler runtime.Marshaler, server JuzuServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Juzu_ListModels_0(ctx context.Context, marshaler runtime.Marshaler, server juzupb.JuzuServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq emptypb.Empty
 	var metadata runtime.ServerMetadata
 
@@ -127,7 +127,7 @@ func request_Juzu_StreamingDiarize_0(ctx context.Context, marshaler runtime.Mars
 // UnaryRPC     :call JuzuServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterJuzuHandlerFromEndpoint instead.
-func RegisterJuzuHandlerServer(ctx context.Context, mux *runtime.ServeMux, server JuzuServer) error {
+func RegisterJuzuHandlerServer(ctx context.Context, mux *runtime.ServeMux, server juzupb.JuzuServer) error {
 
 	mux.Handle("GET", pattern_Juzu_Version_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
