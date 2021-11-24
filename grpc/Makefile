@@ -40,6 +40,7 @@ go-gw: juzu.proto
 	sed -i -E "s/protoReq /&juzupb\./g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
 	sed -i -E "s/(protoReq )juzupb\.([A-Za-z]+\.)/\1\2/g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
 	sed -i -E "s/, client /, client juzupb./g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
+	sed -i -E "s/, server /, server juzupb./g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
 	sed -i -E "s/Client /, client juzupb./g" ${GO_OUTDIR}/gw/juzu.pb.gw.go
 	sed -i -E "s/[^(]*Client, runtime/juzupb.&/" ${GO_OUTDIR}/gw/juzu.pb.gw.go
 	sed -i -E "s/New[A-Za-z]*Client/juzupb.&/" ${GO_OUTDIR}/gw/juzu.pb.gw.go
@@ -47,6 +48,7 @@ go-gw: juzu.proto
 
 go-test:
 	cd go-juzu && go test
+	cd go-juzu/juzupb/gw && go test
 
 #########################
 # Python SDK 
