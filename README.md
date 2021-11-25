@@ -43,6 +43,19 @@ cd docs-src
 ../deps/bin/hugo server -D
 ```
 
+### Updating Dependencies
+
+To update dependencies for different languages, please update the [Makefile](Makefile) as well
+as the relevant files for each language:
+
+  | Language | Files to Update |
+  |:--------:|:---------------:|
+  | Go | [SDK `go.mod`](grpc/go-juzu/go.mod) and [Gateway `go.mod`](grpc/go-juzu/juzupb/gw/go.mod) |
+  | Python | [`setup.py`](grpc/py-juzu/setup.py) |
+  | C# | [`juzu.csproj`](grpc/csharp-juzu/juzu.csproj) |
+
+These files should be updated and committed.
+
 ### Tagging New Versions
 
 This repository has several components, and they need more than just a "vX.Y.Z"
