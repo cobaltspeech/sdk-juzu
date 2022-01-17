@@ -136,6 +136,7 @@ Attributes of a Juzu Diarization Model.
 | ----- | ---- | ----- | ----------- |
 | sample_rate | uint32 |  | <p>Audio sample rate supported by the model.</p> |
 | segmentation_type | string |  | <p>The type of segmentation (fixed / variable) supported by the model.</p> |
+| compatible_cubic_models | string | repeated | <p>List of Cubic ASR model IDs that can be used in conjunction with the Juzu model.</p> |
 
 
 
@@ -226,6 +227,7 @@ the RAW_LINEAR16 encoding.
 | RAW_LINEAR16 | 0 | Raw (headerless) Uncompressed 16-bit signed little endian samples (linear PCM), single channel, sampled at the rate expected by the chosen `Model`. |
 | WAV | 1 | WAV (data with RIFF headers), with data sampled at a rate equal to or higher than the sample rate expected by the chosen Model. |
 | FLAC | 2 | FLAC data, sampled at a rate equal to or higher than the sample rate expected by the chosen Model. |
+| MP3 | 3 | MP3 data, sampled at a rate equal to or higher than the sampling rate expected by the chosen Model. |
 
 
  <!-- end enums -->
