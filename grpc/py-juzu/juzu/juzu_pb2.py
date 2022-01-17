@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\t./;juzupb\252\002\021CobaltSpeech.Juzu',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\njuzu.proto\x12\x11\x63obaltspeech.juzu\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x92\x01\n\x17StreamingDiarizeRequest\x12\x36\n\x06\x63onfig\x18\x01 \x01(\x0b\x32$.cobaltspeech.juzu.DiarizationConfigH\x00\x12\x34\n\x05\x61udio\x18\x02 \x01(\x0b\x32#.cobaltspeech.juzu.DiarizationAudioH\x00\x42\t\n\x07request\"/\n\x0fVersionResponse\x12\x0c\n\x04juzu\x18\x01 \x01(\t\x12\x0e\n\x06server\x18\x02 \x01(\t\">\n\x12ListModelsResponse\x12(\n\x06models\x18\x01 \x03(\x0b\x32\x18.cobaltspeech.juzu.Model\"Y\n\x05Model\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x36\n\nattributes\x18\x03 \x01(\x0b\x32\".cobaltspeech.juzu.ModelAttributes\"A\n\x0fModelAttributes\x12\x13\n\x0bsample_rate\x18\x01 \x01(\r\x12\x19\n\x11segmentation_type\x18\x02 \x01(\t\"L\n\x13\x44iarizationResponse\x12\x35\n\x07results\x18\x01 \x03(\x0b\x32$.cobaltspeech.juzu.DiarizationResult\"\xff\x01\n\x11\x44iarizationConfig\x12\x10\n\x08model_id\x18\x01 \x01(\t\x12\x14\n\x0cnum_speakers\x18\x02 \x01(\r\x12\x13\n\x0bsample_rate\x18\x03 \x01(\r\x12\x45\n\x0e\x61udio_encoding\x18\x04 \x01(\x0e\x32-.cobaltspeech.juzu.DiarizationConfig.Encoding\x12\x16\n\x0e\x63ubic_model_id\x18\x05 \x01(\t\x12\x1d\n\x15\x65nable_raw_transcript\x18\x06 \x01(\x08\"/\n\x08\x45ncoding\x12\x10\n\x0cRAW_LINEAR16\x10\x00\x12\x07\n\x03WAV\x10\x01\x12\x08\n\x04\x46LAC\x10\x02\" \n\x10\x44iarizationAudio\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\"m\n\x11\x44iarizationResult\x12,\n\x08segments\x18\x01 \x03(\x0b\x32\x1a.cobaltspeech.juzu.Segment\x12\x16\n\x0espeaker_labels\x18\x02 \x03(\t\x12\x12\n\nis_partial\x18\x03 \x01(\x08\"\xbc\x01\n\x07Segment\x12\x15\n\rspeaker_label\x18\x01 \x01(\t\x12-\n\nstart_time\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x12\n\ntranscript\x18\x04 \x01(\t\x12*\n\x05words\x18\x05 \x03(\x0b\x32\x1b.cobaltspeech.juzu.WordInfo\"\x88\x01\n\x08WordInfo\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x01\x12-\n\nstart_time\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08\x64uration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration2\xcc\x02\n\x04Juzu\x12[\n\x07Version\x12\x16.google.protobuf.Empty\x1a\".cobaltspeech.juzu.VersionResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/api/version\x12\x64\n\nListModels\x12\x16.google.protobuf.Empty\x1a%.cobaltspeech.juzu.ListModelsResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/api/listmodels\x12\x80\x01\n\x10StreamingDiarize\x12*.cobaltspeech.juzu.StreamingDiarizeRequest\x1a&.cobaltspeech.juzu.DiarizationResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/api/diarize(\x01\x30\x01\x42\x1fZ\t./;juzupb\xaa\x02\x11\x43obaltSpeech.Juzub\x06proto3'
+  serialized_pb=b'\n\njuzu.proto\x12\x11\x63obaltspeech.juzu\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x92\x01\n\x17StreamingDiarizeRequest\x12\x36\n\x06\x63onfig\x18\x01 \x01(\x0b\x32$.cobaltspeech.juzu.DiarizationConfigH\x00\x12\x34\n\x05\x61udio\x18\x02 \x01(\x0b\x32#.cobaltspeech.juzu.DiarizationAudioH\x00\x42\t\n\x07request\"/\n\x0fVersionResponse\x12\x0c\n\x04juzu\x18\x01 \x01(\t\x12\x0e\n\x06server\x18\x02 \x01(\t\">\n\x12ListModelsResponse\x12(\n\x06models\x18\x01 \x03(\x0b\x32\x18.cobaltspeech.juzu.Model\"Y\n\x05Model\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x36\n\nattributes\x18\x03 \x01(\x0b\x32\".cobaltspeech.juzu.ModelAttributes\"b\n\x0fModelAttributes\x12\x13\n\x0bsample_rate\x18\x01 \x01(\r\x12\x19\n\x11segmentation_type\x18\x02 \x01(\t\x12\x1f\n\x17\x63ompatible_cubic_models\x18\x03 \x03(\t\"L\n\x13\x44iarizationResponse\x12\x35\n\x07results\x18\x01 \x03(\x0b\x32$.cobaltspeech.juzu.DiarizationResult\"\x88\x02\n\x11\x44iarizationConfig\x12\x10\n\x08model_id\x18\x01 \x01(\t\x12\x14\n\x0cnum_speakers\x18\x02 \x01(\r\x12\x13\n\x0bsample_rate\x18\x03 \x01(\r\x12\x45\n\x0e\x61udio_encoding\x18\x04 \x01(\x0e\x32-.cobaltspeech.juzu.DiarizationConfig.Encoding\x12\x16\n\x0e\x63ubic_model_id\x18\x05 \x01(\t\x12\x1d\n\x15\x65nable_raw_transcript\x18\x06 \x01(\x08\"8\n\x08\x45ncoding\x12\x10\n\x0cRAW_LINEAR16\x10\x00\x12\x07\n\x03WAV\x10\x01\x12\x08\n\x04\x46LAC\x10\x02\x12\x07\n\x03MP3\x10\x03\" \n\x10\x44iarizationAudio\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\"m\n\x11\x44iarizationResult\x12,\n\x08segments\x18\x01 \x03(\x0b\x32\x1a.cobaltspeech.juzu.Segment\x12\x16\n\x0espeaker_labels\x18\x02 \x03(\t\x12\x12\n\nis_partial\x18\x03 \x01(\x08\"\xbc\x01\n\x07Segment\x12\x15\n\rspeaker_label\x18\x01 \x01(\t\x12-\n\nstart_time\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x12\n\ntranscript\x18\x04 \x01(\t\x12*\n\x05words\x18\x05 \x03(\x0b\x32\x1b.cobaltspeech.juzu.WordInfo\"\x88\x01\n\x08WordInfo\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x01\x12-\n\nstart_time\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12+\n\x08\x64uration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration2\xcc\x02\n\x04Juzu\x12[\n\x07Version\x12\x16.google.protobuf.Empty\x1a\".cobaltspeech.juzu.VersionResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/api/version\x12\x64\n\nListModels\x12\x16.google.protobuf.Empty\x1a%.cobaltspeech.juzu.ListModelsResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/api/listmodels\x12\x80\x01\n\x10StreamingDiarize\x12*.cobaltspeech.juzu.StreamingDiarizeRequest\x1a&.cobaltspeech.juzu.DiarizationResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\x0c/api/diarize(\x01\x30\x01\x42\x1fZ\t./;juzupb\xaa\x02\x11\x43obaltSpeech.Juzub\x06proto3'
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -50,11 +50,16 @@ _DIARIZATIONCONFIG_ENCODING = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='MP3', index=3, number=3,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=831,
-  serialized_end=878,
+  serialized_start=864,
+  serialized_end=920,
 )
 _sym_db.RegisterEnumDescriptor(_DIARIZATIONCONFIG_ENCODING)
 
@@ -242,6 +247,13 @@ _MODELATTRIBUTES = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='compatible_cubic_models', full_name='cobaltspeech.juzu.ModelAttributes.compatible_cubic_models', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -255,7 +267,7 @@ _MODELATTRIBUTES = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=477,
-  serialized_end=542,
+  serialized_end=575,
 )
 
 
@@ -286,8 +298,8 @@ _DIARIZATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=544,
-  serialized_end=620,
+  serialized_start=577,
+  serialized_end=653,
 )
 
 
@@ -354,8 +366,8 @@ _DIARIZATIONCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=623,
-  serialized_end=878,
+  serialized_start=656,
+  serialized_end=920,
 )
 
 
@@ -386,8 +398,8 @@ _DIARIZATIONAUDIO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=880,
-  serialized_end=912,
+  serialized_start=922,
+  serialized_end=954,
 )
 
 
@@ -432,8 +444,8 @@ _DIARIZATIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=914,
-  serialized_end=1023,
+  serialized_start=956,
+  serialized_end=1065,
 )
 
 
@@ -492,8 +504,8 @@ _SEGMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1026,
-  serialized_end=1214,
+  serialized_start=1068,
+  serialized_end=1256,
 )
 
 
@@ -545,8 +557,8 @@ _WORDINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1217,
-  serialized_end=1353,
+  serialized_start=1259,
+  serialized_end=1395,
 )
 
 _STREAMINGDIARIZEREQUEST.fields_by_name['config'].message_type = _DIARIZATIONCONFIG
@@ -668,8 +680,8 @@ _JUZU = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1356,
-  serialized_end=1688,
+  serialized_start=1398,
+  serialized_end=1730,
   methods=[
   _descriptor.MethodDescriptor(
     name='Version',
