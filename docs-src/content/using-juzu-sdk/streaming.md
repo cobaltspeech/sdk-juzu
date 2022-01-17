@@ -28,7 +28,8 @@ transcription).
 
 import juzu
 
-serverAddress = '127.0.0.1:2727'
+# This is Cobalt's demo server. Change it to your own local Juzusvr if you have one running.
+serverAddress = 'demo.cobaltspeech.com:2727'
 
 # set insecure=True for connecting to server not using TLS
 client = juzu.Client(serverAddress, insecure=False)
@@ -39,19 +40,21 @@ for model in modelResp.models:
     print("ID = {}\t Name = {}\t [SampleRate = {} Hz]".format(model.id, model.name, model.attributes.sample_rate))
 
 # use the first available model
-juzuModelID = modelResp.models[0]
+juzuModel = modelResp.models[0]
+juzuModelID = juzuModel.id
 
-# Using cubic model to transcribe; Cubicsvr must also be
-# running and the address:port provided in the Juzu server
-# config file. The cubic models and their ID on Cubicsvr can
+# Using the first cubic model that is compatible with the chosen
+# Juzu model to transcribe.
+#
+# Note that Cubicsvr must also be running and the address:port
 # found in cubicsvr.cfg.toml or be obtained via sdk-cubic.
-cubicModelID = "1"
+cubicModelID = juzuModel.attributes.compatible_cubic_models[0]
 
 cfg = juzu.DiarizationConfig(
-    model_id = juzuModel.id,
+    model_id = juzuModelID,
     cubic_model_id = cubicModelID,
     num_speakers = 2,               # number of speakers expected in the audio file
-    audio_encoding = "WAV",         # supported : "RAW_LINEAR16", "FLAC", "WAV"
+    audio_encoding = "WAV",         # supported : "RAW_LINEAR16", "FLAC", "WAV", "MP3"
     sample_rate = 16000,            # must match juzu model's expected sample rate
 )
 
@@ -99,11 +102,13 @@ namespace JuzusvrClient {
     class Program {
 
         static async Task Main (string[] args) {
-
-            var url = "127.0.0.1:2727";
+            
+            // This is Cobalt's demo server. Change it to your own local Juzusvr if you have one running.
+            var url = "demo.cobaltspeech.com:2727";
             string audioFile = "test.wav";
 
-            var insecure = true;
+            // Set insecure = true for connecting to server not using TLS.
+            var insecure = false;
             var client = new Client (url, insecure);
 
             // Getting list of diarization models on the server
@@ -114,11 +119,10 @@ namespace JuzusvrClient {
             }
 
             // Creating config for Diarizing + Transcribing file with the first
-            // Juzu Model available and the Cubic model with ID "1" (assigned by
-            // cubicsvr config).
+            // Juzu Model available and the first compatible Cubic model.
             var diarCfg = new DiarizationConfig {
                 JuzuModelID = modelList.Models[0].Id,
-                CubicModelID = "1",
+                CubicModelID = modelList.Models[0].CompatibleCubicModels[0],
                 NumSpeakers = 2,        // use 0 if unknown
                 SampleRate = 16000,
                 Encoding = AudioEncoding.WAV,
@@ -168,22 +172,25 @@ import juzu
 import pyaudio
 import threading
 
-serverAddress = '127.0.0.1:2727'
+# This is Cobalt's demo server. Change it to your own local Juzusvr if you have one running.
+serverAddress = 'demo.cobaltspeech.com:2727'
 
 # set insecure=True for connecting to server not using TLS
-client = juzu.Client(serverAddress, insecure=True)
+client = juzu.Client(serverAddress, insecure=False)
 
 # get list of available models
 modelResp = client.ListModels()
 
 # use the first available model
 juzuModel = modelResp.models[0]
+juzuModelID = juzuModel.id
+cubicModelID = juzuModel.attributes.compatible_cubic_models[0]
 
 # creating diarization config to transcribe + diarize
 # audio stream from microphone
 cfg = juzu.DiarizationConfig(
-    model_id = juzuModel.id,
-    cubic_model_id = "1",
+    model_id = juzuModelID,
+    cubic_model_id = cubicModelID,
     num_speakers = 2,
     audio_encoding = "RAW_LINEAR16",
     sample_rate = juzuModel.attributes.sample_rate,
