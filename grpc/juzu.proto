@@ -93,6 +93,9 @@ message ModelAttributes {
 
   // The type of segmentation (fixed / variable) supported by the model.
   string segmentation_type = 2;
+
+  // List of Cubic ASR model IDs that can be used in conjunction with the Juzu model.
+  repeated string compatible_cubic_models = 3;
 }
 
 // Collection of sequence of diarization results in a portion of audio.
@@ -134,6 +137,10 @@ message DiarizationConfig {
 	// FLAC data, sampled at a rate equal to or higher than the sample rate
 	// expected by the chosen Model.
 	FLAC = 2;
+
+  // MP3 data, sampled at a rate equal to or higher than the sampling rate
+  // expected by the chosen Model.
+  MP3 = 3;
 
   }
 

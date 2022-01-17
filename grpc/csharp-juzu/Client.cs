@@ -118,6 +118,9 @@ namespace JuzusvrClient {
                 case (AudioEncoding.FLAC):
                     encoding = CobaltSpeech.Juzu.DiarizationConfig.Types.Encoding.Flac;
                     break;
+                case (AudioEncoding.MP3):
+                    encoding = CobaltSpeech.Juzu.DiarizationConfig.Types.Encoding.Mp3;
+                    break;
                 case (AudioEncoding.RAW):
                     encoding = CobaltSpeech.Juzu.DiarizationConfig.Types.Encoding.RawLinear16;
                     break;
@@ -192,6 +195,7 @@ namespace JuzusvrClient {
     public enum AudioEncoding {
         WAV,
         FLAC,
+        MP3,
         RAW,
     }
 }
