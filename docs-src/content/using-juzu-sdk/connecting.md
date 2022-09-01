@@ -21,7 +21,6 @@ TLS encrypted connection. Examples showing how to connect to a server not using
 TLS is also shown in the [Insecure Connection](#insecure-connection) section.
 
 {{< tabs >}}
-
 {{< tab "Python" "py" >}}
 
 import juzu
@@ -36,7 +35,6 @@ print(resp)
 {{< /tab >}}
 
 {{< tab "C#" "csharp" >}}
-
 var serverAddress = "127.0.0.1:2727";
 
 // change this to true if using server without TLS
@@ -48,7 +46,6 @@ var ver = client.Version ();
 Console.WriteLine ("Juzu: {0} Server: {1}", ver.Juzu, ver.Server);
 
 {{< /tab >}}
-
 {{< /tabs >}}
 
 ## Insecure Connection
@@ -61,7 +58,6 @@ insecure client will fail. To connect to an instance of Juzu server without TLS 
 can use:
 
 {{< tabs >}}
-
 {{< tab "Python" "py" >}}
 
 client = juzu.Client(serverAddress, insecure=True)
@@ -69,12 +65,10 @@ client = juzu.Client(serverAddress, insecure=True)
 {{< /tab >}}
 
 {{< tab "C#" "csharp" >}}
-
 var insecure = true;
 var client = new Client (serverAddress, insecure);
 
 {{< /tab >}}
-
 {{< /tabs >}}
 
 ## Client Authentication
